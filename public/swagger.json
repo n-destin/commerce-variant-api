@@ -5,7 +5,82 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"IUser": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					},
+					"provider": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"name": {
+						"properties": {
+							"middleName": {
+								"type": "string"
+							},
+							"givenName": {
+								"type": "string"
+							},
+							"familyName": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"givenName",
+							"familyName"
+						],
+						"type": "object"
+					},
+					"email": {
+						"type": "string"
+					},
+					"emails": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"photos": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"id",
+					"provider",
+					"displayName",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILoginResponse": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"user": {
+						"$ref": "#/components/schemas/IUser"
+					}
+				},
+				"required": [
+					"accessToken",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
 		"securitySchemes": {
 			"jwtAuth": {
 				"type": "http",
@@ -25,6 +100,50 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/auth/signin/google": {
+			"get": {
+				"operationId": "GoogleSignin",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/auth/google/redirect": {
+			"get": {
+				"operationId": "SocialLogin",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ILoginResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/example": {
 			"get": {
 				"operationId": "GetExample",
@@ -40,6 +159,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Zexamples"
+				],
 				"security": [],
 				"parameters": []
 			}
@@ -59,7 +181,36 @@
 						}
 					}
 				},
+				"tags": [
+					"Zexamples"
+				],
 				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/users/profile": {
+			"get": {
+				"operationId": "GetMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
 				"parameters": []
 			}
 		}
