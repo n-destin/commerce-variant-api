@@ -144,6 +144,165 @@
 			},
 			"ICreateCondition": {
 				"$ref": "#/components/schemas/Pick_ICondition.name_"
+			},
+			"Image": {
+				"properties": {
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"url"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductResponse": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"thumbnail": {
+						"type": "string"
+					},
+					"gallery": {
+						"items": {
+							"$ref": "#/components/schemas/Image"
+						},
+						"type": "array"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"condition": {
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"_id": {
+								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+							}
+						},
+						"required": [
+							"name",
+							"_id"
+						],
+						"type": "object"
+					},
+					"category": {
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"_id": {
+								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+							}
+						},
+						"required": [
+							"name",
+							"_id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"name",
+					"_id",
+					"thumbnail",
+					"gallery",
+					"price",
+					"condition",
+					"category"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProduct": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"name": {
+						"type": "string"
+					},
+					"thumbnail": {
+						"type": "string"
+					},
+					"gallery": {
+						"items": {
+							"$ref": "#/components/schemas/Image"
+						},
+						"type": "array"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"condition": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"category": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					}
+				},
+				"required": [
+					"_id",
+					"name",
+					"thumbnail",
+					"gallery",
+					"price",
+					"condition",
+					"category"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_IProduct.Exclude_keyofIProduct._id__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"condition": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"category": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"thumbnail": {
+						"type": "string"
+					},
+					"gallery": {
+						"items": {
+							"$ref": "#/components/schemas/Image"
+						},
+						"type": "array"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"condition",
+					"category",
+					"thumbnail",
+					"gallery",
+					"price"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_IProduct._id_": {
+				"$ref": "#/components/schemas/Pick_IProduct.Exclude_keyofIProduct._id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"ProductDto": {
+				"$ref": "#/components/schemas/Omit_IProduct._id_"
 			}
 		},
 		"securitySchemes": {
@@ -165,6 +324,53 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/assets": {
+			"post": {
+				"operationId": "UploadAssets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"type": "string"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Assets"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"assets": {
+										"items": {
+											"type": "string",
+											"format": "binary"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"assets"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/auth/signin/google": {
 			"get": {
 				"operationId": "GoogleSignin",
@@ -369,6 +575,65 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/api/products": {
+			"get": {
+				"operationId": "GetProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProduct"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductDto"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/api/users/profile": {
