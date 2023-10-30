@@ -11,11 +11,11 @@ import { initAuthStategies } from "./utils/authStrategies";
 
 const app = express();
 app.use(
- session({
-  secret: "_",
-  resave: false,
-  saveUninitialized: false,
- }),
+    session({
+        secret: "_",
+        resave: false,
+        saveUninitialized: false,
+    }),
 );
 
 app.use(passport.initialize());
@@ -23,28 +23,28 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 app.use(
- "/api/docs",
- swaggerUi.serve,
- swaggerUi.setup(undefined, {
-  swaggerOptions: {
-   url: "/swagger.json",
-  },
- }),
+    "/api/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(undefined, {
+        swaggerOptions: {
+            url: "/swagger.json",
+        },
+    }),
 );
 app.use("/api", apiRouter);
 initAuthStategies();
 passport.serializeUser((user, done) => {
- done(null, user);
+    done(null, user);
 });
 
 connectDB().then(() => {
- app.listen(appConfig.PORT, () => {
-  console.log(`The app is running on port ${appConfig.PORT}`);
- });
+    app.listen(appConfig.PORT, () => {
+        console.log(`The app is running on port ${appConfig.PORT}`);
+    });
 });
 app.use(
- (err: Error | CustomError, req: Request, res: Response, _next: NextFunction) => {
-  console.log(err);
-  res.json({ error: err.message || "Internal server error" });
- },
+    (err: Error | CustomError, req: Request, res: Response, _next: NextFunction) => {
+        console.log(err);
+        res.json({ error: err.message || "Internal server error" });
+    },
 );
