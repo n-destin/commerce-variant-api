@@ -1,0 +1,10 @@
+{
+    "prettier.enable": true,
+    "prettier.printWidth": 85,
+    "prettier.tabWidth": 2,
+    "prettier.useTabs":  true,
+    "editor.indentSize": "tabSize",
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+  }
+  
