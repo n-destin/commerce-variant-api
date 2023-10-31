@@ -6,6 +6,7 @@ import categoryRouter from "./category.routes";
 import conditionRouter from "./condition.routes";
 import assetsRouter from "./assets.routes";
 import productRouter from "./product.routes ";
+import purposeRouter from "./purpose.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -15,4 +16,5 @@ apiRouter.use("/categories", categoryRouter);
 apiRouter.use("/conditions", conditionRouter);
 apiRouter.use("/assets", assetsRouter);
 apiRouter.use("/products", productRouter);
+apiRouter.use("/purpose", purposeRouter);
 export default apiRouter;
