@@ -35,6 +35,6 @@ export class CategoryController extends Controller {
     @Path() categoryId: string
   ): Promise<string> {
     await Category.deleteOne({ _id: categoryId });
-    return "Delete successful";
+    return "Deleted successful";
   }
 }

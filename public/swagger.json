@@ -178,6 +178,9 @@
 						"type": "number",
 						"format": "double"
 					},
+					"description": {
+						"type": "string"
+					},
 					"condition": {
 						"properties": {
 							"name": {
@@ -215,6 +218,7 @@
 					"thumbnail",
 					"gallery",
 					"price",
+					"description",
 					"condition",
 					"category"
 				],
@@ -247,6 +251,9 @@
 					},
 					"category": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"description": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -256,7 +263,8 @@
 					"gallery",
 					"price",
 					"condition",
-					"category"
+					"category",
+					"description"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -284,6 +292,9 @@
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"description": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -292,7 +303,8 @@
 					"category",
 					"thumbnail",
 					"gallery",
-					"price"
+					"price",
+					"description"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
@@ -737,6 +749,51 @@
 					}
 				],
 				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/products/{productId}": {
+			"put": {
+				"operationId": "UpdateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProduct"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"requestBody": {
 					"required": true,
 					"content": {
