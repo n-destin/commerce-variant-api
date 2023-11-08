@@ -114,6 +114,22 @@
 			"ICreateCategory": {
 				"$ref": "#/components/schemas/Pick_ICategory.name_"
 			},
+			"ICollege": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ICondition": {
 				"properties": {
 					"_id": {
@@ -350,6 +366,17 @@
 			},
 			"ICreatePurpose": {
 				"$ref": "#/components/schemas/Pick_IPurpose.name_"
+			},
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"Document_any.any.any_": {
+				"$ref": "#/components/schemas/FlattenMaps_T_",
+				"description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
+			},
+			"ObjectId": {
+				"type": "string"
 			}
 		},
 		"securitySchemes": {
@@ -597,6 +624,35 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/colleges": {
+			"get": {
+				"operationId": "GetColleges",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ICollege"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Colleges"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/api/conditions": {
@@ -1010,6 +1066,102 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/api/users/college/{collegeName}": {
+			"put": {
+				"operationId": "AttachCollege",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Document_any.any.any_"
+										},
+										{
+											"properties": {
+												"college": {
+													"$ref": "#/components/schemas/ObjectId"
+												},
+												"email": {
+													"type": "string"
+												},
+												"displayName": {
+													"type": "string"
+												},
+												"provider": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												},
+												"name": {
+													"properties": {
+														"middleName": {
+															"type": "string"
+														},
+														"givenName": {
+															"type": "string"
+														},
+														"familyName": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"photos": {
+													"items": {},
+													"type": "array"
+												},
+												"emails": {
+													"items": {},
+													"type": "array"
+												}
+											},
+											"required": [
+												"photos",
+												"emails"
+											],
+											"type": "object"
+										},
+										{
+											"properties": {
+												"_id": {
+													"$ref": "#/components/schemas/ObjectId"
+												}
+											},
+											"required": [
+												"_id"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "collegeName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
