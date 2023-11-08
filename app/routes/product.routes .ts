@@ -1,10 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
 
-// import passport from "passport";
+import passport from "passport";
 import { ProductController } from "../controllers/product.controller";
 import { IUser } from "../types/User.type";
 import { checkProduct } from "../middlewares/product.middleware";
-import { bypassAuth } from "../middlewares/bypassauth";
 
 const productRouter = express.Router();
 
@@ -18,8 +17,7 @@ productRouter.get("/", async (req: Request, res: Response, next: NextFunction) =
 });
 productRouter.post(
   "/",
-  bypassAuth,
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as IUser;
@@ -38,8 +36,7 @@ productRouter.post(
 
 productRouter.get(
   "/my-products",
-  bypassAuth,
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as IUser;
@@ -55,9 +52,8 @@ productRouter.get(
 
 productRouter.put(
   "/:productId",
-  bypassAuth,
   checkProduct,
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const createdProduct = await ProductController.updateProduct(
@@ -77,9 +73,8 @@ productRouter.put(
 
 productRouter.put(
   "/:id",
-  bypassAuth,
   checkProduct,
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       console.log({
@@ -87,11 +82,11 @@ productRouter.put(
         thumbnail: req.body.thumbnail[0],
         gallery: req.body.gallery.map((url: string) => ({ url })),
       });
-      // const updateCategory = await ProductController.updateProduct(req.params.id, {
-      //   ...req.body,
-      //   thumbnail: req.body.thumbnail[0],
-      //   gallery: req.body.gallery.map((url: string) => ({ url })),
-      // });
+      const updateCategory = await ProductController.updateProduct(req.params.id, {
+        ...req.body,
+        thumbnail: req.body.thumbnail[0],
+        gallery: req.body.gallery.map((url: string) => ({ url })),
+      });
 
       return res.status(200).json({
         ...req.body,
@@ -106,9 +101,8 @@ productRouter.put(
 
 productRouter.delete(
   "/:id",
-  bypassAuth,
   checkProduct,
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const deleteCategory = await ProductController.deleteProduct(req.params.id);
