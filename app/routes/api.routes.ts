@@ -7,6 +7,7 @@ import conditionRouter from "./condition.routes";
 import assetsRouter from "./assets.routes";
 import productRouter from "./product.routes ";
 import purposeRouter from "./purpose.routes";
+import collegeRouter from "./college.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -17,4 +18,5 @@ apiRouter.use("/conditions", conditionRouter);
 apiRouter.use("/assets", assetsRouter);
 apiRouter.use("/products", productRouter);
 apiRouter.use("/purpose", purposeRouter);
+apiRouter.use("/colleges", collegeRouter);
 export default apiRouter;

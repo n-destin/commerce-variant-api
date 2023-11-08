@@ -12,7 +12,7 @@ export const authenticate = async (
   cb: googleStrategy.VerifyCallback | passport.DoneCallback,
 ) => {
   try {
-    const returningUser = await User.findOne({ id: profile.id });
+    const returningUser = await User.findOne({ id: profile.id }).populate("college");
     const user =
       returningUser ??
       (await User.create({ ...profile, email: profile.emails?.[0].value }));
@@ -31,7 +31,7 @@ export const verifyToken = async (
   callback: VerifiedCallback,
 ) => {
   try {
-    const userExists = await User.findById(payload.ref);
+    const userExists = await User.findById(payload.ref).populate("college");
     if (!userExists) {
       throw new CustomError(
         "You can't hack us like that, kindly add more efforts!",
