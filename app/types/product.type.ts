@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IUser } from "./User.type";
 
 export interface Image {
   url: string;
@@ -12,7 +13,7 @@ export interface IProduct {
   price: number;
   condition: mongoose.Types.ObjectId;
   category: mongoose.Types.ObjectId;
-  description: string
+  description: string;
 }
 export type ProductDto = Omit<IProduct, "_id">;
 export interface IProductResponse extends Omit<IProduct, "condition" | "category"> {
@@ -24,4 +25,13 @@ export interface IProductResponse extends Omit<IProduct, "condition" | "category
     _id: mongoose.Types.ObjectId;
     name: string;
   };
+  college?: {
+    _id: mongoose.Types.ObjectId;
+    name: string;
+  };
+  owner?: IUser;
+}
+
+export interface ISingleProductResponse extends IProductResponse {
+  similar: IProductResponse[];
 }

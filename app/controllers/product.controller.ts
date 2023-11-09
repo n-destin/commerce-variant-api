@@ -11,7 +11,12 @@ import {
   Delete,
   Inject,
 } from "tsoa";
-import { IProduct, IProductResponse, ProductDto } from "../types/product.type";
+import {
+  IProduct,
+  IProductResponse,
+  ISingleProductResponse,
+  ProductDto,
+} from "../types/product.type";
 import { Product } from "../database/Product";
 
 @Tags("Products")
@@ -22,6 +27,34 @@ export class ProductController extends Controller {
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<IProductResponse[]> {
     return await Product.find({ ...condition }).populate(["category", "condition"]);
+  }
+
+  @Get("/{productId}")
+  public static async getProduct(
+    @Inject() condition: { [key: string]: string } = {},
+  ): Promise<ISingleProductResponse> {
+    const product = (
+      await Product.findOne({ ...condition })
+        .populate({
+          path: "owner",
+          populate: {
+            path: "college",
+          },
+        })
+        .populate(["category", "condition"])
+    )?.toObject() as IProductResponse;
+
+    const similar = (await Product.find({
+      category: product?.category,
+      _id: { $ne: product._id },
+    }).populate(["category", "condition"])) as IProductResponse[];
+
+    return {
+      ...product,
+      college: product.owner?.college,
+      owner: undefined,
+      similar,
+    };
   }
 
   @Security("jwtAuth")
