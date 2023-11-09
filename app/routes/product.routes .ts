@@ -71,28 +71,15 @@ productRouter.put(
   },
 );
 
-productRouter.put(
-  "/:id",
+productRouter.get(
+  "/:productId",
   checkProduct,
-  passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log({
-        ...req.body,
-        thumbnail: req.body.thumbnail[0],
-        gallery: req.body.gallery.map((url: string) => ({ url })),
+      const product = await ProductController.getProduct({
+        _id: req.params.productId,
       });
-      const updateCategory = await ProductController.updateProduct(req.params.id, {
-        ...req.body,
-        thumbnail: req.body.thumbnail[0],
-        gallery: req.body.gallery.map((url: string) => ({ url })),
-      });
-
-      return res.status(200).json({
-        ...req.body,
-        thumbnail: req.body.thumbnail[0],
-        gallery: req.body.gallery.map((url: string) => ({ url })),
-      });
+      return res.status(200).json(product);
     } catch (error) {
       return next(error);
     }
