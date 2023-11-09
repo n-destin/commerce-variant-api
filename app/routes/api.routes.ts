@@ -8,6 +8,7 @@ import assetsRouter from "./assets.routes";
 import productRouter from "./product.routes ";
 import purposeRouter from "./purpose.routes";
 import collegeRouter from "./college.routes";
+import noticeRouter from "./notice.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -19,4 +20,5 @@ apiRouter.use("/assets", assetsRouter);
 apiRouter.use("/products", productRouter);
 apiRouter.use("/purpose", purposeRouter);
 apiRouter.use("/colleges", collegeRouter);
+apiRouter.use("/notices", noticeRouter);
 export default apiRouter;

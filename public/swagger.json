@@ -1,1539 +1,1535 @@
 {
-	"components": {
-		"examples": {},
-		"headers": {},
-		"parameters": {},
-		"requestBodies": {},
-		"responses": {},
-		"schemas": {
-			"mongoose.Types.ObjectId": {
-				"type": "string"
-			},
-			"ICollege": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IUser": {
-				"properties": {
-					"_id": {
-						"type": "string"
-					},
-					"id": {
-						"type": "string"
-					},
-					"provider": {
-						"type": "string"
-					},
-					"displayName": {
-						"type": "string"
-					},
-					"name": {
-						"properties": {
-							"middleName": {
-								"type": "string"
-							},
-							"givenName": {
-								"type": "string"
-							},
-							"familyName": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"givenName",
-							"familyName"
-						],
-						"type": "object"
-					},
-					"email": {
-						"type": "string"
-					},
-					"emails": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"photos": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"college": {
-						"$ref": "#/components/schemas/ICollege"
-					}
-				},
-				"required": [
-					"_id",
-					"id",
-					"provider",
-					"displayName",
-					"email"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ILoginResponse": {
-				"properties": {
-					"accessToken": {
-						"type": "string"
-					},
-					"user": {
-						"$ref": "#/components/schemas/IUser"
-					}
-				},
-				"required": [
-					"accessToken",
-					"user"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ICategory": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_ICategory.name_": {
-				"properties": {
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"ICreateCategory": {
-				"$ref": "#/components/schemas/Pick_ICategory.name_"
-			},
-			"ICondition": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_ICondition.name_": {
-				"properties": {
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"ICreateCondition": {
-				"$ref": "#/components/schemas/Pick_ICondition.name_"
-			},
-			"Image": {
-				"properties": {
-					"url": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"url"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IProduct": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					},
-					"thumbnail": {
-						"type": "string"
-					},
-					"gallery": {
-						"items": {
-							"$ref": "#/components/schemas/Image"
-						},
-						"type": "array"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"condition": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"category": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"description": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name",
-					"thumbnail",
-					"gallery",
-					"price",
-					"condition",
-					"category",
-					"description"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IOrderResponse": {
-				"properties": {
-					"_id": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"product": {
-						"$ref": "#/components/schemas/IProduct"
-					},
-					"orderer": {
-						"$ref": "#/components/schemas/IUser"
-					}
-				},
-				"required": [
-					"_id",
-					"phone",
-					"product",
-					"orderer"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IOrder": {
-				"properties": {
-					"_id": {
-						"type": "string"
-					},
-					"product": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"orderer": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"phone": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"product",
-					"orderer",
-					"phone"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_IOrder.Exclude_keyofIOrder._id__": {
-				"properties": {
-					"product": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"orderer": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"phone": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"product",
-					"orderer",
-					"phone"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"Omit_IOrder._id_": {
-				"$ref": "#/components/schemas/Pick_IOrder.Exclude_keyofIOrder._id__",
-				"description": "Construct a type with the properties of T except for those in type K."
-			},
-			"IOrderDto": {
-				"$ref": "#/components/schemas/Omit_IOrder._id_"
-			},
-			"IProductResponse": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"thumbnail": {
-						"type": "string"
-					},
-					"gallery": {
-						"items": {
-							"$ref": "#/components/schemas/Image"
-						},
-						"type": "array"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					},
-					"condition": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"category": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"college": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"owner": {
-						"$ref": "#/components/schemas/IUser"
-					}
-				},
-				"required": [
-					"name",
-					"_id",
-					"thumbnail",
-					"gallery",
-					"price",
-					"description",
-					"condition",
-					"category"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ISingleProductResponse": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"thumbnail": {
-						"type": "string"
-					},
-					"gallery": {
-						"items": {
-							"$ref": "#/components/schemas/Image"
-						},
-						"type": "array"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					},
-					"condition": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"category": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"college": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"owner": {
-						"$ref": "#/components/schemas/IUser"
-					},
-					"similar": {
-						"items": {
-							"$ref": "#/components/schemas/IProductResponse"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"name",
-					"_id",
-					"thumbnail",
-					"gallery",
-					"price",
-					"description",
-					"condition",
-					"category",
-					"similar"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_IProduct.Exclude_keyofIProduct._id__": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"condition": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"category": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"thumbnail": {
-						"type": "string"
-					},
-					"gallery": {
-						"items": {
-							"$ref": "#/components/schemas/Image"
-						},
-						"type": "array"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"condition",
-					"category",
-					"thumbnail",
-					"gallery",
-					"price",
-					"description"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"Omit_IProduct._id_": {
-				"$ref": "#/components/schemas/Pick_IProduct.Exclude_keyofIProduct._id__",
-				"description": "Construct a type with the properties of T except for those in type K."
-			},
-			"ProductDto": {
-				"$ref": "#/components/schemas/Omit_IProduct._id_"
-			},
-			"IPurpose": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					},
-					"slug": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name",
-					"slug"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_IPurpose.name_": {
-				"properties": {
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"ICreatePurpose": {
-				"$ref": "#/components/schemas/Pick_IPurpose.name_"
-			},
-			"FlattenMaps_T_": {
-				"properties": {},
-				"type": "object"
-			},
-			"Document_any.any.any_": {
-				"$ref": "#/components/schemas/FlattenMaps_T_",
-				"description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
-			},
-			"ObjectId": {
-				"type": "string"
-			}
-		},
-		"securitySchemes": {
-			"jwtAuth": {
-				"type": "http",
-				"scheme": "bearer",
-				"bearerFormat": "JWT",
-				"description": "Bearer token to access these API endpoints"
-			}
-		}
-	},
-	"info": {
-		"title": "commerce-api",
-		"version": "1.0.0",
-		"license": {
-			"name": "ISC"
-		},
-		"contact": {}
-	},
-	"openapi": "3.0.0",
-	"paths": {
-		"/api/assets": {
-			"post": {
-				"operationId": "UploadAssets",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"type": "string"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Assets"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"multipart/form-data": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"assets": {
-										"items": {
-											"type": "string",
-											"format": "binary"
-										},
-										"type": "array"
-									}
-								},
-								"required": [
-									"assets"
-								]
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/auth/signin/google": {
-			"get": {
-				"operationId": "GoogleSignin",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/auth/google/redirect": {
-			"get": {
-				"operationId": "SocialLogin",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ILoginResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/categories": {
-			"get": {
-				"operationId": "GetAllCategories",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/ICategory"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Categories"
-				],
-				"security": [],
-				"parameters": []
-			},
-			"post": {
-				"operationId": "CreateCategory",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ICategory"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Categories"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICreateCategory"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/categories/{categoryId}": {
-			"put": {
-				"operationId": "UpdateCategory",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ICategory"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Categories"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "categoryId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICreateCategory"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeleteCategory",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Categories"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "categoryId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/colleges": {
-			"get": {
-				"operationId": "GetColleges",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/ICollege"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Colleges"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/api/conditions": {
-			"get": {
-				"operationId": "GetConditions",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/ICondition"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Conditions"
-				],
-				"security": [],
-				"parameters": []
-			},
-			"post": {
-				"operationId": "CreateCondition",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ICondition"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Conditions"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICreateCondition"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/example": {
-			"get": {
-				"operationId": "GetExample",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Zexamples"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/example/error": {
-			"get": {
-				"operationId": "ErrorExample",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Zexamples"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/orders": {
-			"get": {
-				"operationId": "GetOrders",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IOrderResponse"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Orders"
-				],
-				"security": [],
-				"parameters": []
-			},
-			"post": {
-				"operationId": "CreateOrder",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IOrder"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Orders"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IOrderDto"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/orders/{orderId}": {
-			"get": {
-				"operationId": "GetOrder",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IOrderResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Orders"
-				],
-				"security": [],
-				"parameters": []
-			},
-			"delete": {
-				"operationId": "DeleteOrder",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Orders"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "orderId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"put": {
-				"operationId": "UpdateOrder",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IOrder"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Orders"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "orderId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IOrderDto"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/products": {
-			"get": {
-				"operationId": "GetProducts",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IProductResponse"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Products"
-				],
-				"security": [],
-				"parameters": []
-			},
-			"post": {
-				"operationId": "CreateProduct",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProduct"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Products"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ProductDto"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/products/{productId}": {
-			"get": {
-				"operationId": "GetProduct",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ISingleProductResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Products"
-				],
-				"security": [],
-				"parameters": []
-			},
-			"delete": {
-				"operationId": "DeleteProduct",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Products"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "productId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"put": {
-				"operationId": "UpdateProduct",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProduct"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Products"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "productId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ProductDto"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/purpose": {
-			"get": {
-				"operationId": "GetPurpose",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IPurpose"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Purpose"
-				],
-				"security": [],
-				"parameters": []
-			},
-			"post": {
-				"operationId": "CreatePurpose",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IPurpose"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Purpose"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICreatePurpose"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/purpose/{id}": {
-			"patch": {
-				"operationId": "UpdatePurpose",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/IPurpose"
-										}
-									],
-									"nullable": true
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Purpose"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICreatePurpose"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeletePurpose",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/IPurpose"
-										}
-									],
-									"nullable": true
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Purpose"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/users/profile": {
-			"get": {
-				"operationId": "GetMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IUser"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Users"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/api/users/college/{collegeName}": {
-			"put": {
-				"operationId": "AttachCollege",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/Document_any.any.any_"
-										},
-										{
-											"properties": {
-												"college": {
-													"$ref": "#/components/schemas/ObjectId"
-												},
-												"email": {
-													"type": "string"
-												},
-												"displayName": {
-													"type": "string"
-												},
-												"provider": {
-													"type": "string"
-												},
-												"id": {
-													"type": "string"
-												},
-												"name": {
-													"properties": {
-														"middleName": {
-															"type": "string"
-														},
-														"givenName": {
-															"type": "string"
-														},
-														"familyName": {
-															"type": "string"
-														}
-													},
-													"type": "object"
-												},
-												"photos": {
-													"items": {},
-													"type": "array"
-												},
-												"emails": {
-													"items": {},
-													"type": "array"
-												}
-											},
-											"required": [
-												"photos",
-												"emails"
-											],
-											"type": "object"
-										},
-										{
-											"properties": {
-												"_id": {
-													"$ref": "#/components/schemas/ObjectId"
-												}
-											},
-											"required": [
-												"_id"
-											],
-											"type": "object"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Users"
-				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "collegeName",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		}
-	},
-	"servers": [
-		{
-			"url": "/"
-		}
-	]
+  "components": {
+    "examples": {},
+    "headers": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {},
+    "schemas": {
+      "mongoose.Types.ObjectId": {
+        "type": "string"
+      },
+      "ICollege": {
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["_id", "name"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IUser": {
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "name": {
+            "properties": {
+              "middleName": {
+                "type": "string"
+              },
+              "givenName": {
+                "type": "string"
+              },
+              "familyName": {
+                "type": "string"
+              }
+            },
+            "required": ["givenName", "familyName"],
+            "type": "object"
+          },
+          "email": {
+            "type": "string"
+          },
+          "emails": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "photos": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "college": {
+            "$ref": "#/components/schemas/ICollege"
+          }
+        },
+        "required": ["_id", "id", "provider", "displayName", "email"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ILoginResponse": {
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/IUser"
+          }
+        },
+        "required": ["accessToken", "user"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ICategory": {
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["_id", "name"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Pick_ICategory.name_": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["name"],
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "ICreateCategory": {
+        "$ref": "#/components/schemas/Pick_ICategory.name_"
+      },
+      "ICondition": {
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["_id", "name"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Pick_ICondition.name_": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["name"],
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "ICreateCondition": {
+        "$ref": "#/components/schemas/Pick_ICondition.name_"
+      },
+      "INotice": {
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["_id", "name", "photo", "description"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Pick_INotice.Exclude_keyofINotice._id__": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["name", "photo", "description"],
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "Omit_INotice._id_": {
+        "$ref": "#/components/schemas/Pick_INotice.Exclude_keyofINotice._id__",
+        "description": "Construct a type with the properties of T except for those in type K."
+      },
+      "ICreateNotice": {
+        "$ref": "#/components/schemas/Omit_INotice._id_"
+      },
+      "Image": {
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": ["url"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IProduct": {
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "gallery": {
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            },
+            "type": "array"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "category": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "thumbnail",
+          "gallery",
+          "price",
+          "condition",
+          "category",
+          "description"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IOrderResponse": {
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "product": {
+            "$ref": "#/components/schemas/IProduct"
+          },
+          "orderer": {
+            "$ref": "#/components/schemas/IUser"
+          }
+        },
+        "required": ["_id", "phone", "product", "orderer"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IOrder": {
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "product": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "orderer": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "phone": {
+            "type": "string"
+          }
+        },
+        "required": ["_id", "product", "orderer", "phone"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Pick_IOrder.Exclude_keyofIOrder._id__": {
+        "properties": {
+          "product": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "orderer": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "phone": {
+            "type": "string"
+          }
+        },
+        "required": ["product", "orderer", "phone"],
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "Omit_IOrder._id_": {
+        "$ref": "#/components/schemas/Pick_IOrder.Exclude_keyofIOrder._id__",
+        "description": "Construct a type with the properties of T except for those in type K."
+      },
+      "IOrderDto": {
+        "$ref": "#/components/schemas/Omit_IOrder._id_"
+      },
+      "IProductResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "description": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "gallery": {
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            },
+            "type": "array"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "condition": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "_id": {
+                "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+              }
+            },
+            "required": ["name", "_id"],
+            "type": "object"
+          },
+          "category": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "_id": {
+                "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+              }
+            },
+            "required": ["name", "_id"],
+            "type": "object"
+          },
+          "college": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "_id": {
+                "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+              }
+            },
+            "required": ["name", "_id"],
+            "type": "object"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/IUser"
+          }
+        },
+        "required": [
+          "name",
+          "_id",
+          "description",
+          "thumbnail",
+          "gallery",
+          "price",
+          "condition",
+          "category"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ISingleProductResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "description": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "gallery": {
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            },
+            "type": "array"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "condition": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "_id": {
+                "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+              }
+            },
+            "required": ["name", "_id"],
+            "type": "object"
+          },
+          "category": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "_id": {
+                "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+              }
+            },
+            "required": ["name", "_id"],
+            "type": "object"
+          },
+          "college": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "_id": {
+                "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+              }
+            },
+            "required": ["name", "_id"],
+            "type": "object"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/IUser"
+          },
+          "similar": {
+            "items": {
+              "$ref": "#/components/schemas/IProductResponse"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "_id",
+          "description",
+          "thumbnail",
+          "gallery",
+          "price",
+          "condition",
+          "category",
+          "similar"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Pick_IProduct.Exclude_keyofIProduct._id__": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "category": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "gallery": {
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            },
+            "type": "array"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "condition",
+          "category",
+          "thumbnail",
+          "gallery",
+          "price"
+        ],
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "Omit_IProduct._id_": {
+        "$ref": "#/components/schemas/Pick_IProduct.Exclude_keyofIProduct._id__",
+        "description": "Construct a type with the properties of T except for those in type K."
+      },
+      "ProductDto": {
+        "$ref": "#/components/schemas/Omit_IProduct._id_"
+      },
+      "IPurpose": {
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/mongoose.Types.ObjectId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        },
+        "required": ["_id", "name", "slug"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Pick_IPurpose.name_": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["name"],
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "ICreatePurpose": {
+        "$ref": "#/components/schemas/Pick_IPurpose.name_"
+      },
+      "FlattenMaps_T_": {
+        "properties": {},
+        "type": "object"
+      },
+      "Document_any.any.any_": {
+        "$ref": "#/components/schemas/FlattenMaps_T_",
+        "description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
+      },
+      "ObjectId": {
+        "type": "string"
+      }
+    },
+    "securitySchemes": {
+      "jwtAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Bearer token to access these API endpoints"
+      }
+    }
+  },
+  "info": {
+    "title": "commerce-api",
+    "version": "1.0.0",
+    "license": {
+      "name": "ISC"
+    },
+    "contact": {}
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/assets": {
+      "post": {
+        "operationId": "UploadAssets",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Assets"],
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "assets": {
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": ["assets"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signin/google": {
+      "get": {
+        "operationId": "GoogleSignin",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Authentication"],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/auth/google/redirect": {
+      "get": {
+        "operationId": "SocialLogin",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ILoginResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Authentication"],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "operationId": "GetAllCategories",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ICategory"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Categories"],
+        "security": [],
+        "parameters": []
+      },
+      "post": {
+        "operationId": "CreateCategory",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICategory"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Categories"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ICreateCategory"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories/{categoryId}": {
+      "put": {
+        "operationId": "UpdateCategory",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICategory"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Categories"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "categoryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ICreateCategory"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteCategory",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Categories"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "categoryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/colleges": {
+      "get": {
+        "operationId": "GetColleges",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ICollege"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Colleges"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": []
+      }
+    },
+    "/api/conditions": {
+      "get": {
+        "operationId": "GetConditions",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ICondition"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Conditions"],
+        "security": [],
+        "parameters": []
+      },
+      "post": {
+        "operationId": "CreateCondition",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICondition"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Conditions"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ICreateCondition"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/example": {
+      "get": {
+        "operationId": "GetExample",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Zexamples"],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/example/error": {
+      "get": {
+        "operationId": "ErrorExample",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Zexamples"],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/notices": {
+      "get": {
+        "operationId": "GetNotices",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/INotice"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Notice"],
+        "security": [],
+        "parameters": []
+      },
+      "post": {
+        "operationId": "CreateNotice",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICondition"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Notice"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ICreateNotice"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notices/user/my-notices": {
+      "get": {
+        "operationId": "GetMyNotices",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/INotice"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Notice"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": []
+      }
+    },
+    "/api/orders": {
+      "get": {
+        "operationId": "GetOrders",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IOrderResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Orders"],
+        "security": [],
+        "parameters": []
+      },
+      "post": {
+        "operationId": "CreateOrder",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrder"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Orders"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IOrderDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{orderId}": {
+      "get": {
+        "operationId": "GetOrder",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrderResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Orders"],
+        "security": [],
+        "parameters": []
+      },
+      "delete": {
+        "operationId": "DeleteOrder",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Orders"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orderId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "operationId": "UpdateOrder",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrder"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Orders"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orderId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IOrderDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "operationId": "GetProducts",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IProductResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Products"],
+        "security": [],
+        "parameters": []
+      },
+      "post": {
+        "operationId": "CreateProduct",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProduct"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Products"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{productId}": {
+      "get": {
+        "operationId": "GetProduct",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISingleProductResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Products"],
+        "security": [],
+        "parameters": []
+      },
+      "delete": {
+        "operationId": "DeleteProduct",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Products"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "operationId": "UpdateProduct",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProduct"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Products"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/purpose": {
+      "get": {
+        "operationId": "GetPurpose",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IPurpose"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Purpose"],
+        "security": [],
+        "parameters": []
+      },
+      "post": {
+        "operationId": "CreatePurpose",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPurpose"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Purpose"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ICreatePurpose"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/purpose/{id}": {
+      "patch": {
+        "operationId": "UpdatePurpose",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/IPurpose"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Purpose"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ICreatePurpose"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeletePurpose",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/IPurpose"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Purpose"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/users/profile": {
+      "get": {
+        "operationId": "GetMyProfile",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IUser"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Users"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": []
+      }
+    },
+    "/api/users/college/{collegeName}": {
+      "put": {
+        "operationId": "AttachCollege",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Document_any.any.any_"
+                    },
+                    {
+                      "properties": {
+                        "college": {
+                          "$ref": "#/components/schemas/ObjectId"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "provider": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "properties": {
+                            "middleName": {
+                              "type": "string"
+                            },
+                            "givenName": {
+                              "type": "string"
+                            },
+                            "familyName": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "photos": {
+                          "items": {},
+                          "type": "array"
+                        },
+                        "emails": {
+                          "items": {},
+                          "type": "array"
+                        }
+                      },
+                      "required": ["photos", "emails"],
+                      "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "_id": {
+                          "$ref": "#/components/schemas/ObjectId"
+                        }
+                      },
+                      "required": ["_id"],
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Users"],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "collegeName",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }
