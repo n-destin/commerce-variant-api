@@ -14,4 +14,4 @@ export interface IOrderResponse extends Omit<IOrder, "product" | "orderer"> {
   orderer: IUser;
 }
 
-export type IOrderDto = Omit<IOrder, "_id">;
+export type IOrderDto = Pick<IOrder, "product">;

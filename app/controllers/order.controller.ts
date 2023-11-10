@@ -1,3 +1,4 @@
+import { IOrderDto } from "./../types/order.type";
 import {
   Route,
   Controller,
@@ -11,8 +12,13 @@ import {
   Delete,
   Inject,
 } from "tsoa";
-import { IOrder, IOrderDto, IOrderResponse } from "../types/Order.type";
+import { IOrder, IOrderResponse } from "../types/order.type";
 import { Order } from "../database/Order";
+import { v4 } from "uuid";
+import { Product } from "../database/Product";
+import { IProduct } from "../types/product.type";
+import { createCheckoutSession } from "../utils/checkoutSession";
+import { IUser } from "../types/User.type";
 
 @Tags("Orders")
 @Route("api/orders")
@@ -37,8 +43,20 @@ export class OrderController extends Controller {
 
   @Security("jwtAuth")
   @Post("/")
-  public static async createOrder(@Body() order: IOrderDto): Promise<IOrder> {
-    return (await Order.create(order)) as unknown as IOrder;
+  public static async createOrder(
+    @Inject() user: IUser,
+    @Body() order: IOrderDto,
+  ): Promise<string | null> {
+    const orderRefId = v4();
+    const { product: productId } = order;
+    const product = (await Product.findById(productId)) as IProduct;
+    await Order.create({
+      ref_id: orderRefId,
+      product: product._id,
+      total: 1 * product.price,
+      orderer: user._id,
+    });
+    return await createCheckoutSession(product.name, product.price, user.email);
   }
 
   @Security("jwtAuth")

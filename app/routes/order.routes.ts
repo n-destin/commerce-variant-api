@@ -21,10 +21,7 @@ orderRouter.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as IUser;
-      const createdOrder = await OrderController.createOrder({
-        ...req.body,
-        orderer: user._id,
-      });
+      const createdOrder = await OrderController.createOrder(user, req.body);
       return res.status(201).json(createdOrder);
     } catch (error) {
       return next(error);
