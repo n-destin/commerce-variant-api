@@ -17,11 +17,11 @@ export interface IProduct {
 }
 export type ProductDto = Omit<IProduct, "_id">;
 export interface IProductResponse extends Omit<IProduct, "condition" | "category"> {
-  condition: {
+  condition?: {
     _id: mongoose.Types.ObjectId;
     name: string;
   };
-  category: {
+  category?: {
     _id: mongoose.Types.ObjectId;
     name: string;
   };
@@ -34,4 +34,9 @@ export interface IProductResponse extends Omit<IProduct, "condition" | "category
 
 export interface ISingleProductResponse extends IProductResponse {
   similar: IProductResponse[];
+}
+
+export interface IProductFilter {
+  categories: string[];
+  colleges: string[];
 }
