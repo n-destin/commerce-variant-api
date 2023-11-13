@@ -12,4 +12,5 @@ export const appConfig = {
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
   cloudName: process.env.CLOUD_NAME,
   frontEndUrl: process.env.FRONTEND_URL!,
+  appUrl: process.env.APP_URL!,
 };
