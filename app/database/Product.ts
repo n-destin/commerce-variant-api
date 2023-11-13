@@ -20,6 +20,10 @@ const productSchema = new mongoose.Schema({
     ref: "User",
   },
   description: String,
+  isAvailable: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 export const Product = mongoose.model("Product", productSchema);

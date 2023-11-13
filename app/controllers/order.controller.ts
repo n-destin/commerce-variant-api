@@ -19,6 +19,7 @@ import { Product } from "../database/Product";
 import { IProduct } from "../types/product.type";
 import { createCheckoutSession } from "../utils/checkoutSession";
 import { IUser } from "../types/User.type";
+import CustomError from "../utils/CustomError";
 
 @Tags("Orders")
 @Route("api/orders")
@@ -56,7 +57,13 @@ export class OrderController extends Controller {
       total: 1 * product.price,
       orderer: user._id,
     });
-    return await createCheckoutSession(product.name, product.price, user.email);
+    return await createCheckoutSession(
+      product.name,
+      product.price,
+      user.email,
+      orderRefId,
+      product._id,
+    );
   }
 
   @Security("jwtAuth")
@@ -78,5 +85,14 @@ export class OrderController extends Controller {
       { new: true },
     )) as IOrder;
     return updated;
+  }
+  @Get("/{refId}/status")
+  public static async updateStatus(@Path() refId: string, @Inject() status: string) {
+    const order = await Order.findOne({ ref_id: refId });
+    if (!order) {
+      throw new CustomError("Order not found", 400);
+    }
+    await Order.findByIdAndUpdate(order._id, { paymentStatus: status });
+    await Product.findByIdAndUpdate(order.product, { isAvailable: false });
   }
 }

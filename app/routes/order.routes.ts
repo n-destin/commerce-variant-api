@@ -4,6 +4,7 @@ import passport from "passport";
 import { OrderController } from "../controllers/order.controller";
 import { IUser } from "../types/User.type";
 import { checkOrder } from "../middlewares/order.middleware";
+import { appConfig } from "../config/app";
 
 const orderRouter = express.Router();
 
@@ -84,6 +85,20 @@ orderRouter.delete(
     try {
       const deleteCategory = await OrderController.deleteOrder(req.params.id);
       return res.status(200).json(deleteCategory);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
+orderRouter.get(
+  "/:refId/status",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const status = req.query.status;
+      console.log(status);
+      await OrderController.updateStatus(req.params.refId, status as string);
+      return res.redirect(`${appConfig.frontEndUrl}/dashboard/orders`);
     } catch (error) {
       return next(error);
     }
