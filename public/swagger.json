@@ -374,9 +374,29 @@
 					"thumbnail",
 					"gallery",
 					"price",
-					"description",
-					"condition",
-					"category"
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductFilter": {
+				"properties": {
+					"categories": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"colleges": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"categories",
+					"colleges"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -467,8 +487,6 @@
 					"gallery",
 					"price",
 					"description",
-					"condition",
-					"category",
 					"similar"
 				],
 				"type": "object",
@@ -836,11 +854,7 @@
 				"tags": [
 					"Colleges"
 				],
-				"security": [
-					{
-						"jwtAuth": []
-					}
-				],
+				"security": [],
 				"parameters": []
 			}
 		},
@@ -1157,6 +1171,39 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ProductDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/products/filter": {
+			"post": {
+				"operationId": "FilterProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProductFilter"
 							}
 						}
 					}

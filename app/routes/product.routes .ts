@@ -1,9 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
-
 import passport from "passport";
 import { ProductController } from "../controllers/product.controller";
 import { IUser } from "../types/User.type";
 import { checkProduct } from "../middlewares/product.middleware";
+import { Types } from "mongoose";
 
 const productRouter = express.Router();
 
@@ -28,6 +28,18 @@ productRouter.post(
         owner: user._id,
       });
       return res.status(201).json(createdProduct);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
+productRouter.post(
+  "/filter",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const getProducts = await ProductController.filterProducts(req.body);
+      return res.status(200).json(getProducts);
     } catch (error) {
       return next(error);
     }
