@@ -95,4 +95,22 @@ export class OrderController extends Controller {
     await Order.findByIdAndUpdate(order._id, { paymentStatus: status });
     await Product.findByIdAndUpdate(order.product, { isAvailable: false });
   }
+  @Get("/seller/{id}")
+  public static async getSellersOrders(@Path() id: string): Promise<unknown> {
+    const products = await Product.find({ owner: id }).select("_id");
+    const productIds = products.map((product) => product._id);
+    const orders = await Order.find({
+      product: { $in: productIds },
+      paymentStatus: "PAID",
+    }).populate("product");
+    return orders;
+  }
+  @Get("/buyer/{id}")
+  public static async getBuyerOrders(@Path() id: string): Promise<unknown> {
+    const orders = await Order.find({
+      orderer: id,
+      paymentStatus: "PAID",
+    }).populate("product");
+    return orders;
+  }
 }
