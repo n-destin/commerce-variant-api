@@ -13,11 +13,13 @@ import {
 } from "tsoa";
 import {
   IProduct,
+  IProductFilter,
   IProductResponse,
   ISingleProductResponse,
   ProductDto,
 } from "../types/product.type";
 import { Product } from "../database/Product";
+import { College } from "../database/College";
 
 @Tags("Products")
 @Route("api/products")
@@ -30,6 +32,31 @@ export class ProductController extends Controller {
       "category",
       "condition",
     ]);
+  }
+
+  @Post("/filter")
+  public static async filterProducts(
+    @Body() filter: IProductFilter,
+    @Inject() condition: { [key: string]: any } = {},
+  ): Promise<any[]> {
+    const { categories, colleges } = filter;
+    if (categories && categories.length > 0) {
+      condition.category = { $in: categories };
+    }
+
+    const data = (await Product.find({ ...condition, isAvailable: true })
+      .populate({ path: "owner", select: "college" })
+      .populate(["category", "condition"])) as IProductResponse[];
+
+    if (colleges && colleges.length > 0) {
+      const filteredProducts = data.filter((product) => {
+        const collegeId = product?.owner?.college?.toString();
+        return collegeId !== undefined && colleges.includes(collegeId);
+      });
+      return filteredProducts;
+    }
+
+    return data;
   }
 
   @Get("/{productId}")
@@ -55,7 +82,6 @@ export class ProductController extends Controller {
     return {
       ...product,
       college: product.owner?.college,
-      owner: undefined,
       similar,
     };
   }

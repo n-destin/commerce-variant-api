@@ -11,6 +11,8 @@ import collegeRouter from "./college.routes";
 import noticeRouter from "./notice.routes";
 import orderRouter from "./order.routes";
 import searchRouter from "./search.routes";
+import chatRouter from "./chat.routes";
+import messageRouter from "./message.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -25,4 +27,6 @@ apiRouter.use("/colleges", collegeRouter);
 apiRouter.use("/notices", noticeRouter);
 apiRouter.use("/orders", orderRouter);
 apiRouter.use("/search", searchRouter);
+apiRouter.use("/chats", chatRouter);
+apiRouter.use("/messages", messageRouter);
 export default apiRouter;
