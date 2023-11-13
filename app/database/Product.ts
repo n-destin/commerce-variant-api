@@ -20,6 +20,12 @@ const productSchema = new mongoose.Schema({
     ref: "User",
   },
   description: String,
+  isAvailable: {
+    type: Boolean,
+    default: true,
+  },
 });
+
+productSchema.index({ name: "text", description: "text"});
 
 export const Product = mongoose.model("Product", productSchema);

@@ -28,7 +28,10 @@ export class ProductController extends Controller {
   public static async getProducts(
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<IProductResponse[]> {
-    return await Product.find({ ...condition }).populate(["category", "condition"]);
+    return await Product.find({ ...condition, isAvailable: true }).populate([
+      "category",
+      "condition",
+    ]);
   }
 
   @Post("/filter")
