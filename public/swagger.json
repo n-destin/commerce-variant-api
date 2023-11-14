@@ -1387,6 +1387,31 @@
 				}
 			}
 		},
+		"/api/products/my-products": {
+			"get": {
+				"operationId": "GetMyProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/products/filter": {
 			"post": {
 				"operationId": "FilterProducts",

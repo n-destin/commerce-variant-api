@@ -1,13 +1,5 @@
-import {
-  Route,
-  Controller,
-  Get,
-  Tags,
-  Path,
-} from "tsoa";
-import {
-  IProductResponse,
-} from "../types/product.type";
+import { Route, Controller, Get, Tags, Path } from "tsoa";
+import { IProductResponse } from "../types/product.type";
 import { Product } from "../database/Product";
 
 @Tags("Search")
@@ -17,7 +9,10 @@ export class SearchController extends Controller {
   public static async searchProducts(
     @Path() searchQuery: string,
   ): Promise<IProductResponse[]> {
-    const regex = new RegExp(searchQuery, 'i'); 
-    return await Product.find({ name: regex }).populate(["category", "condition"]);
+    const regex = new RegExp(searchQuery, "i");
+    return await Product.find({ name: regex, isAvailable: true }).populate([
+      "category",
+      "condition",
+    ]);
   }
 }
