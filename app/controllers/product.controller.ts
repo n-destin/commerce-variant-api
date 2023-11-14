@@ -19,19 +19,23 @@ import {
   ProductDto,
 } from "../types/product.type";
 import { Product } from "../database/Product";
-import { College } from "../database/College";
 
 @Tags("Products")
 @Route("api/products")
 export class ProductController extends Controller {
   @Get("/")
-  public static async getProducts(
-    @Inject() condition: { [key: string]: string } = {},
-  ): Promise<IProductResponse[]> {
-    return await Product.find({ ...condition, isAvailable: true }).populate([
+  public static async getProducts(): Promise<IProductResponse[]> {
+    return await Product.find({ isAvailable: true }).populate([
       "category",
       "condition",
     ]);
+  }
+
+  @Get("/my-products")
+  public static async getMyProducts(
+    @Inject() condition: { [key: string]: string } = {},
+  ): Promise<IProductResponse[]> {
+    return await Product.find({ ...condition }).populate(["category", "condition"]);
   }
 
   @Post("/filter")
@@ -44,7 +48,7 @@ export class ProductController extends Controller {
       condition.category = { $in: categories };
     }
 
-    const data = (await Product.find({ ...condition })
+    const data = (await Product.find({ ...condition, isAvailable: true })
       .populate({ path: "owner", select: "college" })
       .populate(["category", "condition"])) as IProductResponse[];
 
@@ -64,7 +68,7 @@ export class ProductController extends Controller {
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<ISingleProductResponse> {
     const product = (
-      await Product.findOne({ ...condition })
+      await Product.findOne({ ...condition, isAvailable: true })
         .populate({
           path: "owner",
           populate: {
@@ -77,6 +81,7 @@ export class ProductController extends Controller {
     const similar = (await Product.find({
       category: product?.category,
       _id: { $ne: product._id },
+      isAvailable: true,
     }).populate(["category", "condition"])) as IProductResponse[];
 
     return {

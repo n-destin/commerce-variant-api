@@ -3,7 +3,6 @@ import passport from "passport";
 import { ProductController } from "../controllers/product.controller";
 import { IUser } from "../types/User.type";
 import { checkProduct } from "../middlewares/product.middleware";
-import { Types } from "mongoose";
 
 const productRouter = express.Router();
 
@@ -52,7 +51,7 @@ productRouter.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as IUser;
-      const getProducts = await ProductController.getProducts({
+      const getProducts = await ProductController.getMyProducts({
         owner: user._id,
       });
       return res.status(201).json(getProducts);
