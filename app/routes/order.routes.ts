@@ -104,5 +104,13 @@ orderRouter.get(
     }
   },
 );
+orderRouter.get(
+  "/seller/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const sellerId = req.params.id as string;
+    const orders = await OrderController.getSellersOrders(sellerId);
+    return res.json(orders);
+  },
+);
 
 export default orderRouter;

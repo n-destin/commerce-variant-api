@@ -413,8 +413,7 @@
 					"description",
 					"thumbnail",
 					"gallery",
-					"price",
-					"description"
+					"price"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -437,8 +436,6 @@
 				"required": [
 					"categories",
 					"colleges"
-					"condition",
-					"category"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -529,9 +526,6 @@
 					"thumbnail",
 					"gallery",
 					"price",
-					"description",
-					"condition",
-					"category",
 					"similar"
 				],
 				"type": "object",
@@ -1268,6 +1262,64 @@
 					{
 						"in": "path",
 						"name": "refId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/orders/seller/{id}": {
+			"get": {
+				"operationId": "GetSellersOrders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/orders/buyer/{id}": {
+			"get": {
+				"operationId": "GetBuyerOrders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
