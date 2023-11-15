@@ -11,7 +11,7 @@ const purposeSchema: Schema = new mongoose.Schema({
 });
 
 purposeSchema.pre<IPurpose>("save", function (next) {
-  this.slug = this.name.toLowerCase().replace(/ /g, "-");
+  this.slug = this.name.toUpperCase().replace(/ /g, "-");
   next();
 });
 
