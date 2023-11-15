@@ -19,6 +19,10 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  purpose: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Purpose",
+  },
   description: String,
   isAvailable: {
     type: Boolean,
@@ -26,6 +30,6 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-productSchema.index({ name: "text", description: "text"});
+productSchema.index({ name: "text", description: "text" });
 
 export const Product = mongoose.model("Product", productSchema);
