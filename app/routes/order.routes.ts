@@ -121,4 +121,15 @@ orderRouter.get(
   },
 );
 
+orderRouter.get(
+  "/code/:id",
+  passport.authenticate("jwt", { session: false }),
+  checkOrder,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const orderId = req.params.id;
+    const orderCode = await OrderController.getOrderCode(orderId);
+    return res.json(orderCode);
+  },
+);
+
 export default orderRouter;

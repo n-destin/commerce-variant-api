@@ -20,6 +20,8 @@ import { IProduct } from "../types/product.type";
 import { createCheckoutSession } from "../utils/checkoutSession";
 import { IUser } from "../types/User.type";
 import CustomError from "../utils/CustomError";
+import { OrderCode } from "../database/OrderCode";
+import { generateOrderCode } from "../utils/codegenerator";
 
 @Tags("Orders")
 @Route("api/orders")
@@ -112,5 +114,18 @@ export class OrderController extends Controller {
       paymentStatus: "PAID",
     }).populate("product");
     return orders;
+  }
+  @Security("jwtAuth")
+  @Get("/code/{id}")
+  public static async getOrderCode(@Path() id: string) {
+    try {
+      const orderCode = await OrderCode.findOne({ order: id });
+      const code = orderCode?.code
+        ? orderCode.code
+        : (await OrderCode.create({ order: id, code: generateOrderCode() })).code;
+      return code;
+    } catch (error) {
+      throw new CustomError("Server error");
+    }
   }
 }

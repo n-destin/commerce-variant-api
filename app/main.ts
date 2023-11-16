@@ -73,7 +73,6 @@ connectDB().then(() => {
 
 app.use(
   (err: Error | CustomError, req: Request, res: Response, _next: NextFunction) => {
-    console.log(err);
-    res.json({ error: err.message || "Internal server error" });
+    res.status(400).json({ error: err.message || "Internal server error" });
   },
 );

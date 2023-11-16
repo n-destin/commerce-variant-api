@@ -1834,6 +1834,41 @@
 				]
 			}
 		},
+		"/api/orders/code/{id}": {
+			"get": {
+				"operationId": "GetOrderCode",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/products": {
 			"get": {
 				"operationId": "GetProducts",
@@ -2047,6 +2082,31 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/products/purpose/{slug}": {
+			"get": {
+				"operationId": "GetProductByPurpose",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/api/purpose": {
