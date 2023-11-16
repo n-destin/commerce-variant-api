@@ -14,6 +14,7 @@ import searchRouter from "./search.routes";
 import chatRouter from "./chat.routes";
 import messageRouter from "./message.routes";
 import rentProductsRouter from "./rentProducts.routes";
+import donateProductsRouter from "./donateProducts.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -31,4 +32,6 @@ apiRouter.use("/search", searchRouter);
 apiRouter.use("/chats", chatRouter);
 apiRouter.use("/messages", messageRouter);
 apiRouter.use("/rent-products", rentProductsRouter);
+apiRouter.use("/donate-products", donateProductsRouter);
+
 export default apiRouter;
