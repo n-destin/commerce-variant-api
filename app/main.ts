@@ -10,6 +10,9 @@ import session from "express-session";
 import { initAuthStategies } from "./utils/authStrategies";
 import { Server } from "socket.io";
 import { createServer } from "http"; // Use 'http' instead of 'node:http'
+import { ChatController } from "./controllers/chat.controller";
+import { MessageController } from "./controllers/message.controller";
+import { send } from "process";
 
 const app = express();
 const server = createServer(app);
@@ -54,14 +57,32 @@ io.on("connection", (socket) => {
     console.log(`User disconnected ${socket.id}`);
   });
 
-  socket.on("join-room", (chatId) => {
-    socket.join(chatId);
-    console.log("client joined " + chatId);
+  socket.on("get-chat-threads", async (userId: string) => {
+    const threads = await ChatController.myChats(userId);
+    socket.join(userId);
+    io.to(userId).emit("retrieved-chat-threads", threads);
+  });
+
+  socket.on("send-message", async ({ sender, ...data }, callback) => {
+    const message = await MessageController.createMessage(data, sender);
+    io.to(data.chat).emit("getMessage", message);
+    callback(data);
+  });
+
+  socket.on("join-room", async (chatId) => {
+    try {
+      if (chatId.length > 20) {
+        socket.join(chatId);
+        const chats = await ChatController.getChatById(chatId);
+        io.to(chatId).emit("chatHistory", chats);
+        console.log("client joined " + chatId);
+      }
+    } catch (error) {}
   });
 
   socket.on("sendMessage", (data) => {
-    console.log(data);
-    io.to(data.chatId).emit("getMessage", data);
+    console.log("message received", data);
+    io.to(data.chat).emit("getMessage", data);
   });
 });
 

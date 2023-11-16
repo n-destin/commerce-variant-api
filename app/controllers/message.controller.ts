@@ -23,7 +23,11 @@ export class MessageController extends Controller {
     @Body() data: ICreateMessage,
     @Inject() sender: string,
   ): Promise<IMessage> {
-    return (await Message.create({ ...data, sender })) as IMessage;
+    const newMessage = await Message.create({ ...data, sender });
+    return (await Message.findById(newMessage._id).populate(
+      "chat",
+      "sender",
+    )) as IMessage;
   }
   @Security("jwtAuth")
   @Put("/{messageId}")
