@@ -349,6 +349,90 @@
 			"ICreateCondition": {
 				"$ref": "#/components/schemas/Pick_ICondition.name_"
 			},
+			"IProductResponse": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"thumbnail": {
+						"type": "string"
+					},
+					"gallery": {
+						"items": {
+							"$ref": "#/components/schemas/Image"
+						},
+						"type": "array"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"description": {
+						"type": "string"
+					},
+					"condition": {
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"_id": {
+								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+							}
+						},
+						"required": [
+							"name",
+							"_id"
+						],
+						"type": "object"
+					},
+					"category": {
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"_id": {
+								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+							}
+						},
+						"required": [
+							"name",
+							"_id"
+						],
+						"type": "object"
+					},
+					"college": {
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"_id": {
+								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+							}
+						},
+						"required": [
+							"name",
+							"_id"
+						],
+						"type": "object"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/IUser"
+					}
+				},
+				"required": [
+					"name",
+					"_id",
+					"thumbnail",
+					"gallery",
+					"price",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Pick_IMessage.chat-or-text_": {
 				"properties": {
 					"chat": {
@@ -397,17 +481,17 @@
 					"name": {
 						"type": "string"
 					},
-					"photo": {
+					"description": {
 						"type": "string"
 					},
-					"description": {
+					"photo": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"name",
-					"photo",
-					"description"
+					"description",
+					"photo"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
@@ -604,9 +688,6 @@
 					"_id": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
-					"description": {
-						"type": "string"
-					},
 					"thumbnail": {
 						"type": "string"
 					},
@@ -622,6 +703,8 @@
 					},
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
+					"description": {
+						"type": "string"
 					},
 					"condition": {
 						"properties": {
@@ -681,10 +764,10 @@
 				"required": [
 					"name",
 					"_id",
-					"description",
 					"thumbnail",
 					"gallery",
 					"price",
+					"description",
 					"similar"
 				],
 				"type": "object",
@@ -693,9 +776,6 @@
 			"Pick_IProduct.Exclude_keyofIProduct._id__": {
 				"properties": {
 					"name": {
-						"type": "string"
-					},
-					"description": {
 						"type": "string"
 					},
 					"condition": {
@@ -719,16 +799,18 @@
 					},
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
+					"description": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"name",
-					"description",
 					"condition",
 					"category",
 					"thumbnail",
 					"gallery",
-					"price"
+					"price",
+					"description"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
@@ -1285,6 +1367,31 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/donate-products": {
+			"get": {
+				"operationId": "GetDonateProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Donate Products"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/api/example": {
@@ -2271,6 +2378,31 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/rent-products": {
+			"get": {
+				"operationId": "GetRentProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Rent Products"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/api/search/{searchQuery}": {
