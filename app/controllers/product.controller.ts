@@ -87,7 +87,6 @@ export class ProductController extends Controller {
     return {
       ...product,
       college: product.owner?.college,
-      owner: undefined,
       similar,
     };
   }

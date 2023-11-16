@@ -133,88 +133,6 @@
 			"ICreateCategory": {
 				"$ref": "#/components/schemas/Pick_ICategory.name_"
 			},
-			"ICondition": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_ICondition.name_": {
-				"properties": {
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"ICreateCondition": {
-				"$ref": "#/components/schemas/Pick_ICondition.name_"
-			},
-			"INotice": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					},
-					"photo": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name",
-					"photo",
-					"description"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_INotice.Exclude_keyofINotice._id__": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"photo": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"photo",
-					"description"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"Omit_INotice._id_": {
-				"$ref": "#/components/schemas/Pick_INotice.Exclude_keyofINotice._id__",
-				"description": "Construct a type with the properties of T except for those in type K."
-			},
-			"ICreateNotice": {
-				"$ref": "#/components/schemas/Omit_INotice._id_"
-			},
 			"Image": {
 				"properties": {
 					"url": {
@@ -270,6 +188,213 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"IMessage": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"chat": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"sender": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"text": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"chat",
+					"sender",
+					"text"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IChatDTO": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"buyer": {
+						"$ref": "#/components/schemas/IUser"
+					},
+					"product": {
+						"$ref": "#/components/schemas/IProduct"
+					},
+					"acceptedPrice": {
+						"type": "number",
+						"format": "double"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/IUser"
+					},
+					"messages": {
+						"items": {
+							"$ref": "#/components/schemas/IMessage"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"buyer",
+					"product",
+					"owner"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IChat": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"buyer": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"product": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"acceptedPrice": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"_id",
+					"buyer",
+					"owner",
+					"product",
+					"acceptedPrice"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_IChat.buyer-or-product_": {
+				"properties": {
+					"buyer": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"product": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					}
+				},
+				"required": [
+					"buyer",
+					"product"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ICreateChat": {
+				"$ref": "#/components/schemas/Pick_IChat.buyer-or-product_"
+			},
+			"ICondition": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_ICondition.name_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ICreateCondition": {
+				"$ref": "#/components/schemas/Pick_ICondition.name_"
+			},
+			"Pick_IMessage.chat-or-text_": {
+				"properties": {
+					"chat": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"text": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"chat",
+					"text"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ICreateMessage": {
+				"$ref": "#/components/schemas/Pick_IMessage.chat-or-text_"
+			},
+			"INotice": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"name": {
+						"type": "string"
+					},
+					"photo": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"name",
+					"photo",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_INotice.Exclude_keyofINotice._id__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"photo": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"photo",
+					"description"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_INotice._id_": {
+				"$ref": "#/components/schemas/Pick_INotice.Exclude_keyofINotice._id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"ICreateNotice": {
+				"$ref": "#/components/schemas/Omit_INotice._id_"
 			},
 			"IOrderResponse": {
 				"properties": {
@@ -872,6 +997,195 @@
 				]
 			}
 		},
+		"/api/chats": {
+			"get": {
+				"operationId": "GetAllChats",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IChatDTO"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Chats"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/chats/{chatId}/by-id": {
+			"get": {
+				"operationId": "GetChatById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IChatDTO"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Chats"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/chats/my-chats": {
+			"get": {
+				"operationId": "MyChats",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IChatDTO"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Chats"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/chats/{productId}": {
+			"get": {
+				"operationId": "GetChat",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IChatDTO"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Chats"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/chats/{chatId}": {
+			"put": {
+				"operationId": "UpdateChat",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IChat"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Chats"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "chatId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateChat"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteChat",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Chats"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "chatId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/colleges": {
 			"get": {
 				"operationId": "GetColleges",
@@ -998,6 +1312,120 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/api/messages": {
+			"post": {
+				"operationId": "CreateMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMessage"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Messages"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateMessage"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/messages/{messageId}": {
+			"put": {
+				"operationId": "UpdateMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMessage"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Messages"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "messageId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateMessage"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Messages"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "messageId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/api/notices": {

@@ -8,43 +8,72 @@ import connectDB from "./config/db";
 import passport from "passport";
 import session from "express-session";
 import { initAuthStategies } from "./utils/authStrategies";
+import { Server } from "socket.io";
+import { createServer } from "http"; // Use 'http' instead of 'node:http'
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173", // Specify the origin for CORS
+    methods: ["GET", "POST"],
+  },
+});
+
+app.use(cors());
 app.use(
-    session({
-        secret: "_",
-        resave: false,
-        saveUninitialized: false,
-    }),
+  session({
+    secret: "_",
+    resave: false,
+    saveUninitialized: false,
+  }),
 );
 
 app.use(passport.initialize());
-app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 app.use(
-    "/api/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(undefined, {
-        swaggerOptions: {
-            url: "/swagger.json",
-        },
-    }),
+  "/api/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: "/swagger.json",
+    },
+  }),
 );
 app.use("/api", apiRouter);
 initAuthStategies();
 passport.serializeUser((user, done) => {
-    done(null, user);
+  done(null, user);
+});
+
+// Listen for when the client connects via socket.io-client
+io.on("connection", (socket) => {
+  // You can write your socket event listeners here...
+  socket.on("disconnect", () => {
+    console.log(`User disconnected ${socket.id}`);
+  });
+
+  socket.on("join-room", (chatId) => {
+    socket.join(chatId);
+    console.log("client joined " + chatId);
+  });
+
+  socket.on("sendMessage", (data) => {
+    console.log(data);
+    io.to(data.chatId).emit("getMessage", data);
+  });
 });
 
 connectDB().then(() => {
-    app.listen(appConfig.PORT, () => {
-        console.log(`The app is running on port ${appConfig.PORT}`);
-    });
+  server.listen(appConfig.PORT, () => {
+    console.log(`The app is running on port ${appConfig.PORT}`);
+  });
 });
+
 app.use(
-    (err: Error | CustomError, req: Request, res: Response, _next: NextFunction) => {
-        console.log(err);
-        res.json({ error: err.message || "Internal server error" });
-    },
+  (err: Error | CustomError, req: Request, res: Response, _next: NextFunction) => {
+    console.log(err);
+    res.json({ error: err.message || "Internal server error" });
+  },
 );
