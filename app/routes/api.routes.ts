@@ -13,6 +13,7 @@ import orderRouter from "./order.routes";
 import searchRouter from "./search.routes";
 import chatRouter from "./chat.routes";
 import messageRouter from "./message.routes";
+import rentProductsRouter from "./rentProducts.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -29,4 +30,5 @@ apiRouter.use("/orders", orderRouter);
 apiRouter.use("/search", searchRouter);
 apiRouter.use("/chats", chatRouter);
 apiRouter.use("/messages", messageRouter);
+apiRouter.use("/rent-products", rentProductsRouter);
 export default apiRouter;
