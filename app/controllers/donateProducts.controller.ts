@@ -8,7 +8,7 @@ import { Purpose } from "../database/Purpose";
 export class DonateProductsController extends Controller {
   @Get("/")
   public static async getDonateProducts(): Promise<IProductResponse[]> {
-    const regex = new RegExp("donate", "i"); 
+    const regex = new RegExp("Donation", "i");
     const purpose = await Purpose.findOne({ name: regex });
     return await Product.find({ purpose: purpose, isAvailable: true }).populate([
       "category",
