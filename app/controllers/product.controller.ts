@@ -19,6 +19,8 @@ import {
   ProductDto,
 } from "../types/product.type";
 import { Product } from "../database/Product";
+import { Purpose } from "../database/Purpose";
+import CustomError from "../utils/CustomError";
 
 @Tags("Products")
 @Route("api/products")
@@ -116,5 +118,19 @@ export class ProductController extends Controller {
       { new: true },
     )) as IProduct;
     return updated;
+  }
+
+  @Get("/purpose/{slug}")
+  public static async getProductByPurpose(
+    @Inject() purposeSlug: string,
+  ): Promise<IProductResponse[]> {
+    const purpose = await Purpose.findOne({ slug: purposeSlug });
+    if (!purpose) {
+      throw new CustomError("purpose not found");
+    }
+    return await Product.find({ purpose: purpose._id }).populate([
+      "category",
+      "condition",
+    ]);
   }
 }

@@ -26,5 +26,4 @@ const orderSchema = new mongoose.Schema({
     default: "NOT_YET_DELIVERED",
   },
 });
-
 export const Order = mongoose.model("Order", orderSchema);

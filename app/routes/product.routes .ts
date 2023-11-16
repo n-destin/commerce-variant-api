@@ -111,4 +111,16 @@ productRouter.delete(
   },
 );
 
+productRouter.get(
+  "/purpose/:slug",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const products = await ProductController.getProductByPurpose(req.params.slug);
+      return res.status(200).json(products);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
 export default productRouter;
