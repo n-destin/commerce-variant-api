@@ -145,6 +145,26 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IPurpose": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"name": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"name",
+					"slug"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IProduct": {
 				"properties": {
 					"_id": {
@@ -174,6 +194,9 @@
 					},
 					"description": {
 						"type": "string"
+					},
+					"purpose": {
+						"$ref": "#/components/schemas/IPurpose"
 					}
 				},
 				"required": [
@@ -409,6 +432,10 @@
 					},
 					"orderer": {
 						"$ref": "#/components/schemas/IUser"
+					},
+					"days": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -420,20 +447,21 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_IOrder.product_": {
+			"IOrderDto": {
 				"properties": {
 					"product": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"days": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
 					"product"
 				],
 				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"IOrderDto": {
-				"$ref": "#/components/schemas/Pick_IOrder.product_"
+				"additionalProperties": false
 			},
 			"IOrder": {
 				"properties": {
@@ -482,6 +510,9 @@
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"purpose": {
+						"$ref": "#/components/schemas/IPurpose"
 					},
 					"condition": {
 						"properties": {
@@ -589,6 +620,9 @@
 						"type": "number",
 						"format": "double"
 					},
+					"purpose": {
+						"$ref": "#/components/schemas/IPurpose"
+					},
 					"condition": {
 						"properties": {
 							"name": {
@@ -682,6 +716,9 @@
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"purpose": {
+						"$ref": "#/components/schemas/IPurpose"
 					}
 				},
 				"required": [
@@ -702,26 +739,6 @@
 			},
 			"ProductDto": {
 				"$ref": "#/components/schemas/Omit_IProduct._id_"
-			},
-			"IPurpose": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"name": {
-						"type": "string"
-					},
-					"slug": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"_id",
-					"name",
-					"slug"
-				],
-				"type": "object",
-				"additionalProperties": false
 			},
 			"Pick_IPurpose.name_": {
 				"properties": {

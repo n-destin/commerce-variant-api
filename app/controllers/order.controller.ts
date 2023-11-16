@@ -52,16 +52,24 @@ export class OrderController extends Controller {
   ): Promise<string | null> {
     const orderRefId = v4();
     const { product: productId } = order;
-    const product = (await Product.findById(productId)) as IProduct;
+    const product = (await Product.findById(productId).populate(
+      "purpose",
+    )) as IProduct;
+    const quantity =
+      product?.purpose?.slug.includes("RENT") && order.days && order.days > 0
+        ? order.days
+        : 1;
+    const total = quantity * product.price;
     await Order.create({
       ref_id: orderRefId,
       product: product._id,
-      total: 1 * product.price,
+      total: total,
       orderer: user._id,
+      days: order.days,
     });
     return await createCheckoutSession(
       product.name,
-      product.price,
+      total,
       user.email,
       orderRefId,
       product._id,

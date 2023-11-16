@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { IUser } from "./User.type";
+import { IPurpose } from "./purpose.type";
 
 export interface Image {
   url: string;
@@ -14,6 +15,7 @@ export interface IProduct {
   condition: mongoose.Types.ObjectId;
   category: mongoose.Types.ObjectId;
   description: string;
+  purpose?: IPurpose;
 }
 export type ProductDto = Omit<IProduct, "_id">;
 export interface IProductResponse extends Omit<IProduct, "condition" | "category"> {

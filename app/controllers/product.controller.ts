@@ -30,6 +30,7 @@ export class ProductController extends Controller {
     return await Product.find({ isAvailable: true }).populate([
       "category",
       "condition",
+      "purpose",
     ]);
   }
 
@@ -37,7 +38,11 @@ export class ProductController extends Controller {
   public static async getMyProducts(
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<IProductResponse[]> {
-    return await Product.find({ ...condition }).populate(["category", "condition"]);
+    return await Product.find({ ...condition }).populate([
+      "category",
+      "condition",
+      "purpose",
+    ]);
   }
 
   @Post("/filter")
@@ -52,7 +57,7 @@ export class ProductController extends Controller {
 
     const data = (await Product.find({ ...condition, isAvailable: true })
       .populate({ path: "owner", select: "college" })
-      .populate(["category", "condition"])) as IProductResponse[];
+      .populate(["category", "condition", "purpose"])) as IProductResponse[];
 
     if (colleges && colleges.length > 0) {
       const filteredProducts = data.filter((product) => {
@@ -77,7 +82,7 @@ export class ProductController extends Controller {
             path: "college",
           },
         })
-        .populate(["category", "condition"])
+        .populate(["category", "condition", "purpose"])
     )?.toObject() as IProductResponse;
 
     const similar = (await Product.find({
