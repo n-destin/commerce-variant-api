@@ -28,6 +28,9 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  rent_days: {
+    type: Number,
+  },
 });
 
 productSchema.index({ name: "text", description: "text" });

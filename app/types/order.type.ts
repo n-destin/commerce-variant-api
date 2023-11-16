@@ -12,6 +12,9 @@ export interface IOrder {
 export interface IOrderResponse extends Omit<IOrder, "product" | "orderer"> {
   product: IProduct;
   orderer: IUser;
+  days?: number;
 }
 
-export type IOrderDto = Pick<IOrder, "product">;
+export interface IOrderDto extends Pick<IOrder, "product"> {
+  days?: number;
+}

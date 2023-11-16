@@ -17,6 +17,9 @@ const orderSchema = new mongoose.Schema({
   total: {
     type: Number,
   },
+  rentDays: {
+    type: Number,
+  },
   paymentStatus: {
     type: String,
     default: "PENDING",
