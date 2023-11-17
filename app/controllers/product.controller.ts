@@ -21,6 +21,7 @@ import {
 import { Product } from "../database/Product";
 import { Purpose } from "../database/Purpose";
 import CustomError from "../utils/CustomError";
+import { Order } from "../database/Order";
 
 @Tags("Products")
 @Route("api/products")
@@ -73,6 +74,7 @@ export class ProductController extends Controller {
   @Get("/{productId}")
   public static async getProduct(
     @Inject() condition: { [key: string]: string } = {},
+    @Inject() user: string | undefined,
   ): Promise<ISingleProductResponse> {
     const product = (
       await Product.findOne({ ...condition, isAvailable: true })
@@ -89,12 +91,24 @@ export class ProductController extends Controller {
       category: product?.category,
       _id: { $ne: product._id },
       isAvailable: true,
-    }).populate(["category", "condition"])) as IProductResponse[];
+    }).populate(["category", "condition", "purpose"])) as IProductResponse[];
+    let isOrdered = false;
+    if (user != "") {
+      const order = await Order.findOne({
+        product: product._id,
+        orderer: user,
+        paymentStatus: "PAID",
+        deliveryStatus: "NOT_YET_DELIVERED",
+      });
+
+      if (order) isOrdered = true;
+    }
 
     return {
       ...product,
       college: product.owner?.college,
       similar,
+      isOrdered,
     };
   }
 

@@ -207,7 +207,6 @@
 					"name",
 					"thumbnail",
 					"gallery",
-					"price",
 					"condition",
 					"category",
 					"description"
@@ -433,7 +432,6 @@
 					"_id",
 					"thumbnail",
 					"gallery",
-					"price",
 					"description"
 				],
 				"type": "object",
@@ -679,6 +677,9 @@
 							"$ref": "#/components/schemas/IProductResponse"
 						},
 						"type": "array"
+					},
+					"isOrdered": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -686,7 +687,6 @@
 					"_id",
 					"thumbnail",
 					"gallery",
-					"price",
 					"description",
 					"similar"
 				],
@@ -730,7 +730,6 @@
 					"category",
 					"thumbnail",
 					"gallery",
-					"price",
 					"description"
 				],
 				"type": "object",

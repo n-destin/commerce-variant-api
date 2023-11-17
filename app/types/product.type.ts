@@ -11,7 +11,7 @@ export interface IProduct {
   name: string;
   thumbnail: string;
   gallery: Array<Image>;
-  price: number;
+  price?: number;
   condition: mongoose.Types.ObjectId;
   category: mongoose.Types.ObjectId;
   description: string;
@@ -36,6 +36,7 @@ export interface IProductResponse extends Omit<IProduct, "condition" | "category
 
 export interface ISingleProductResponse extends IProductResponse {
   similar: IProductResponse[];
+  isOrdered?: boolean;
 }
 
 export interface IProductFilter {

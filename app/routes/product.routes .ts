@@ -87,9 +87,12 @@ productRouter.get(
   checkProduct,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const product = await ProductController.getProduct({
-        _id: req.params.productId,
-      });
+      const product = await ProductController.getProduct(
+        {
+          _id: req.params.productId,
+        },
+        "",
+      );
       return res.status(200).json(product);
     } catch (error) {
       return next(error);

@@ -6,7 +6,10 @@ const productSchema = new mongoose.Schema({
   name: String,
   thumbnail: String,
   gallery: [ImageSchema],
-  price: Number,
+  price: {
+    type: Number,
+    required: false,
+  },
   condition: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Condition",
