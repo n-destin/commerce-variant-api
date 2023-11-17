@@ -39,6 +39,9 @@
 					"displayName": {
 						"type": "string"
 					},
+					"isAdmin": {
+						"type": "boolean"
+					},
 					"name": {
 						"properties": {
 							"middleName": {
@@ -373,6 +376,9 @@
 					"description": {
 						"type": "string"
 					},
+					"purpose": {
+						"$ref": "#/components/schemas/IPurpose"
+					},
 					"condition": {
 						"properties": {
 							"name": {
@@ -571,93 +577,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IProductResponse": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"description": {
-						"type": "string"
-					},
-					"thumbnail": {
-						"type": "string"
-					},
-					"gallery": {
-						"items": {
-							"$ref": "#/components/schemas/Image"
-						},
-						"type": "array"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"purpose": {
-						"$ref": "#/components/schemas/IPurpose"
-					},
-					"condition": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"category": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"college": {
-						"properties": {
-							"name": {
-								"type": "string"
-							},
-							"_id": {
-								"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-							}
-						},
-						"required": [
-							"name",
-							"_id"
-						],
-						"type": "object"
-					},
-					"owner": {
-						"$ref": "#/components/schemas/IUser"
-					}
-				},
-				"required": [
-					"name",
-					"_id",
-					"description",
-					"thumbnail",
-					"gallery",
-					"price"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"IProductFilter": {
 				"properties": {
 					"categories": {
@@ -701,10 +620,11 @@
 						"type": "number",
 						"format": "double"
 					},
-					"purpose": {
-						"$ref": "#/components/schemas/IPurpose"
 					"description": {
 						"type": "string"
+					},
+					"purpose": {
+						"$ref": "#/components/schemas/IPurpose"
 					},
 					"condition": {
 						"properties": {
@@ -797,10 +717,11 @@
 						"type": "number",
 						"format": "double"
 					},
-					"purpose": {
-						"$ref": "#/components/schemas/IPurpose"
 					"description": {
 						"type": "string"
+					},
+					"purpose": {
+						"$ref": "#/components/schemas/IPurpose"
 					}
 				},
 				"required": [
@@ -2482,6 +2403,9 @@
 											"properties": {
 												"college": {
 													"$ref": "#/components/schemas/ObjectId"
+												},
+												"isAdmin": {
+													"type": "boolean"
 												},
 												"email": {
 													"type": "string"
