@@ -55,25 +55,32 @@ export class OrderController extends Controller {
     const product = (await Product.findById(productId).populate(
       "purpose",
     )) as IProduct;
+    const isDonation = product?.purpose?.slug.includes("DONAT");
     const quantity =
       product?.purpose?.slug.includes("RENT") && order.days && order.days > 0
         ? order.days
         : 1;
-    const total = quantity * product.price;
+    const total = isDonation && product.price ? quantity * product.price : 0;
+    const paymentStatus = isDonation ? "PAID" : "PENDING";
     await Order.create({
       ref_id: orderRefId,
       product: product._id,
       total: total,
       orderer: user._id,
       days: order.days,
+      paymentStatus,
     });
-    return await createCheckoutSession(
-      product.name,
-      total,
-      user.email,
-      orderRefId,
-      product._id,
-    );
+    if (!isDonation && total) {
+      return await createCheckoutSession(
+        product.name,
+        total,
+        user.email,
+        orderRefId,
+        product._id,
+      );
+    } else {
+      return "created";
+    }
   }
 
   @Security("jwtAuth")
