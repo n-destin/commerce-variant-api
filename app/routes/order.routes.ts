@@ -132,4 +132,20 @@ orderRouter.get(
   },
 );
 
+orderRouter.post(
+  "/confirm",
+  passport.authenticate("jwt", { session: false }),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const orderCode = await OrderController.confirmOrder(
+        req.body,
+        req.user as IUser,
+      );
+      return res.json(orderCode);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
 export default orderRouter;

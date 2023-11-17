@@ -1,4 +1,4 @@
-import { IOrderDto } from "./../types/order.type";
+import { IOrderConfirm, IOrderDto } from "./../types/order.type";
 import {
   Route,
   Controller,
@@ -30,7 +30,20 @@ export class OrderController extends Controller {
   public static async getOrders(
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<IOrderResponse[]> {
-    return await Order.find({ ...condition }).populate(["orderer", "product"]);
+    return await Order.find({ ...condition })
+      .populate(["orderer", "product"])
+      .populate({
+        path: "product",
+        populate: {
+          path: "owner",
+        },
+      })
+      .populate({
+        path: "product",
+        populate: {
+          path: "purpose",
+        },
+      });
   }
 
   @Get("/{orderId}")
@@ -55,12 +68,13 @@ export class OrderController extends Controller {
     const product = (await Product.findById(productId).populate(
       "purpose",
     )) as IProduct;
-    const isDonation = product?.purpose?.slug.includes("DONAT");
+    if (!product) throw new CustomError("Product not found", 400);
+    const isDonation = product?.purpose?.slug?.includes("DONAT");
     const quantity =
       product?.purpose?.slug.includes("RENT") && order.days && order.days > 0
         ? order.days
         : 1;
-    const total = isDonation && product.price ? quantity * product.price : 0;
+    const total = isDonation ? 0 : quantity * product.price!;
     const paymentStatus = isDonation ? "PAID" : "PENDING";
     await Order.create({
       ref_id: orderRefId,
@@ -70,7 +84,7 @@ export class OrderController extends Controller {
       days: order.days,
       paymentStatus,
     });
-    if (!isDonation && total) {
+    if (!isDonation) {
       return await createCheckoutSession(
         product.name,
         total,
@@ -79,6 +93,7 @@ export class OrderController extends Controller {
         product._id,
       );
     } else {
+      await Product.findByIdAndUpdate(product._id, { isAvailable: false });
       return "created";
     }
   }
@@ -142,5 +157,34 @@ export class OrderController extends Controller {
     } catch (error) {
       throw new CustomError("Server error");
     }
+  }
+  @Post("/confirm")
+  public static async confirmOrder(
+    @Body() data: IOrderConfirm,
+    @Inject() user: IUser,
+  ) {
+    const order = (await Order.findById(data.orderId)
+      .populate(["product"])
+      .populate({
+        path: "product",
+        populate: {
+          path: "owner",
+        },
+      })) as IOrderResponse;
+    if (!order) throw new CustomError("Order not found");
+    const orderCode = await OrderCode.findOne({ order: data.orderId });
+    if (orderCode?.code !== data.code) {
+      throw new CustomError("Invalid confirmation code", 400);
+    }
+
+    const requester = order.product.owner?._id.toString();
+    const owner = user._id.toString();
+    console.log(requester, "---", owner);
+    if (requester != owner) {
+      throw new CustomError("Access Denied", 403);
+    }
+
+    await Order.findByIdAndUpdate(order._id, { deliveryStatus: "DELIVERED" });
+    return data;
   }
 }

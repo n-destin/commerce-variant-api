@@ -16,6 +16,7 @@ export interface IProduct {
   category: mongoose.Types.ObjectId;
   description: string;
   purpose?: IPurpose;
+  owner?: IUser;
 }
 export type ProductDto = Omit<IProduct, "_id">;
 export interface IProductResponse extends Omit<IProduct, "condition" | "category"> {
