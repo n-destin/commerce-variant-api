@@ -200,6 +200,9 @@
 					},
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/IUser"
 					}
 				},
 				"required": [
@@ -378,6 +381,9 @@
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
 					},
+					"owner": {
+						"$ref": "#/components/schemas/IUser"
+					},
 					"condition": {
 						"properties": {
 							"name": {
@@ -422,9 +428,6 @@
 							"_id"
 						],
 						"type": "object"
-					},
-					"owner": {
-						"$ref": "#/components/schemas/IUser"
 					}
 				},
 				"required": [
@@ -575,6 +578,22 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IOrderConfirm": {
+				"properties": {
+					"orderId": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"orderId",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IProductFilter": {
 				"properties": {
 					"categories": {
@@ -624,6 +643,9 @@
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
 					},
+					"owner": {
+						"$ref": "#/components/schemas/IUser"
+					},
 					"condition": {
 						"properties": {
 							"name": {
@@ -668,9 +690,6 @@
 							"_id"
 						],
 						"type": "object"
-					},
-					"owner": {
-						"$ref": "#/components/schemas/IUser"
 					},
 					"similar": {
 						"items": {
@@ -722,6 +741,9 @@
 					},
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/IUser"
 					}
 				},
 				"required": [
@@ -1911,6 +1933,38 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/orders/confirm": {
+			"post": {
+				"operationId": "ConfirmOrder",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderConfirm"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IOrderConfirm"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/api/products": {

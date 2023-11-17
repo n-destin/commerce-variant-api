@@ -18,3 +18,8 @@ export interface IOrderResponse extends Omit<IOrder, "product" | "orderer"> {
 export interface IOrderDto extends Pick<IOrder, "product"> {
   days?: number;
 }
+
+export interface IOrderConfirm {
+  orderId: string;
+  code: string;
+}

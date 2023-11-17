@@ -28,5 +28,9 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: "NOT_YET_DELIVERED",
   },
+  days: {
+    type: Number,
+    default: 0,
+  },
 });
 export const Order = mongoose.model("Order", orderSchema);
