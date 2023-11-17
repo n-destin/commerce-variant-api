@@ -5,6 +5,7 @@ export interface IUser {
   id: string;
   provider: string;
   displayName: string;
+  isAdmin?: boolean;
   name?: {
     familyName: string;
     givenName: string;
