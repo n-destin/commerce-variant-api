@@ -15,6 +15,7 @@ import chatRouter from "./chat.routes";
 import messageRouter from "./message.routes";
 import rentProductsRouter from "./rentProducts.routes";
 import donateProductsRouter from "./donateProducts.routes";
+import statisticsRouter from "./statistics.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -33,5 +34,6 @@ apiRouter.use("/chats", chatRouter);
 apiRouter.use("/messages", messageRouter);
 apiRouter.use("/rent-products", rentProductsRouter);
 apiRouter.use("/donate-products", donateProductsRouter);
+apiRouter.use("/statistics", statisticsRouter);
 
 export default apiRouter;
