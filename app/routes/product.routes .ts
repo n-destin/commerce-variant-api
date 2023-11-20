@@ -100,6 +100,19 @@ productRouter.get(
   },
 );
 
+productRouter.get(
+  "/:productId/logs",
+  checkProduct,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const logs = await ProductController.getProductLogs(req.params.productId);
+      return res.status(200).json(logs);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
 productRouter.delete(
   "/:id",
   checkProduct,

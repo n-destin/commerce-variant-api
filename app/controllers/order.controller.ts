@@ -1,4 +1,4 @@
-import { IOrderConfirm, IOrderDto } from "./../types/order.type";
+import { IOrderConfirm, IOrderDto, IProductReturn } from "./../types/order.type";
 import {
   Route,
   Controller,
@@ -22,6 +22,7 @@ import { IUser } from "../types/User.type";
 import CustomError from "../utils/CustomError";
 import { OrderCode } from "../database/OrderCode";
 import { generateOrderCode } from "../utils/codegenerator";
+import { ProductLog } from "../database/ProductLog";
 
 @Tags("Orders")
 @Route("api/orders")
@@ -70,13 +71,11 @@ export class OrderController extends Controller {
     )) as IProduct;
     if (!product) throw new CustomError("Product not found", 400);
     const isDonation = product?.purpose?.slug?.includes("DONAT");
-    const quantity =
-      product?.purpose?.slug.includes("RENT") && order.days && order.days > 0
-        ? order.days
-        : 1;
+    const isRent = product?.purpose?.slug?.includes("RENT");
+    const quantity = isRent && order.days && order.days > 0 ? order.days : 1;
     const total = isDonation ? 0 : quantity * product.price!;
     const paymentStatus = isDonation ? "PAID" : "PENDING";
-    await Order.create({
+    const createdOrder = await Order.create({
       ref_id: orderRefId,
       product: product._id,
       total: total,
@@ -84,6 +83,13 @@ export class OrderController extends Controller {
       days: order.days,
       paymentStatus,
     });
+    if (isRent) {
+      await ProductLog.create({
+        product: createdOrder.product?._id,
+        user: user._id,
+        text: "__name__ orders the product",
+      });
+    }
     if (!isDonation) {
       return await createCheckoutSession(
         product.name,
@@ -134,7 +140,20 @@ export class OrderController extends Controller {
     const orders = await Order.find({
       product: { $in: productIds },
       paymentStatus: "PAID",
-    }).populate("product");
+    })
+      .populate("product")
+      .populate({
+        path: "product",
+        populate: {
+          path: "purpose",
+        },
+      })
+      .populate({
+        path: "product",
+        populate: {
+          path: "condition",
+        },
+      });
     return orders;
   }
   @Get("/buyer/{id}")
@@ -142,7 +161,20 @@ export class OrderController extends Controller {
     const orders = await Order.find({
       orderer: id,
       paymentStatus: "PAID",
-    }).populate("product");
+    })
+      .populate("product")
+      .populate({
+        path: "product",
+        populate: {
+          path: "purpose",
+        },
+      })
+      .populate({
+        path: "product",
+        populate: {
+          path: "condition",
+        },
+      });
     return orders;
   }
   @Security("jwtAuth")
@@ -185,6 +217,27 @@ export class OrderController extends Controller {
     }
 
     await Order.findByIdAndUpdate(order._id, { deliveryStatus: "DELIVERED" });
+    await ProductLog.create({
+      product: order.product._id,
+      user: order.orderer,
+      text: "Product delivered to __name__",
+    });
+    return data;
+  }
+
+  @Post("/return")
+  public static async returnProduct(
+    @Body() data: IProductReturn,
+    @Inject() user: IUser,
+  ) {
+    const order = await Order.findByIdAndUpdate(data.orderId, {
+      returnedDate: new Date(),
+    });
+    await Product.findByIdAndUpdate(order?.product, { isAvailable: true });
+    await ProductLog.create({
+      product: order?.product,
+      text: "Product is returned and made available again",
+    });
     return data;
   }
 }

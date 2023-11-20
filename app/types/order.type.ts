@@ -13,6 +13,7 @@ export interface IOrderResponse extends Omit<IOrder, "product" | "orderer"> {
   product: IProduct;
   orderer: IUser;
   days?: number;
+  returnedDate?: Date;
 }
 
 export interface IOrderDto extends Pick<IOrder, "product"> {
@@ -22,4 +23,8 @@ export interface IOrderDto extends Pick<IOrder, "product"> {
 export interface IOrderConfirm {
   orderId: string;
   code: string;
+}
+
+export interface IProductReturn {
+  orderId: string;
 }

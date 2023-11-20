@@ -527,6 +527,10 @@
 					"days": {
 						"type": "number",
 						"format": "double"
+					},
+					"returnedDate": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
@@ -590,6 +594,18 @@
 				"required": [
 					"orderId",
 					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductReturn": {
+				"properties": {
+					"orderId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"orderId"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -708,6 +724,30 @@
 					"gallery",
 					"description",
 					"similar"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductLog": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"text": {
+						"type": "string"
+					},
+					"user": {
+						"$ref": "#/components/schemas/IUser"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"_id",
+					"text",
+					"createdAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2034,6 +2074,38 @@
 				}
 			}
 		},
+		"/api/orders/return": {
+			"post": {
+				"operationId": "ReturnProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductReturn"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProductReturn"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/products": {
 			"get": {
 				"operationId": "GetProducts",
@@ -2247,6 +2319,31 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/products/{productId}/logs": {
+			"get": {
+				"operationId": "GetProductLogs",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductLog"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/api/products/purpose/{slug}": {

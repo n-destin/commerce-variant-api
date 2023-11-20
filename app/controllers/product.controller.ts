@@ -14,6 +14,7 @@ import {
 import {
   IProduct,
   IProductFilter,
+  IProductLog,
   IProductResponse,
   ISingleProductResponse,
   ProductDto,
@@ -22,6 +23,7 @@ import { Product } from "../database/Product";
 import { Purpose } from "../database/Purpose";
 import CustomError from "../utils/CustomError";
 import { Order } from "../database/Order";
+import { ProductLog } from "../database/ProductLog";
 
 @Tags("Products")
 @Route("api/products")
@@ -110,6 +112,26 @@ export class ProductController extends Controller {
       similar,
       isOrdered,
     };
+  }
+
+  @Get("/{productId}/logs")
+  public static async getProductLogs(
+    @Inject() productId: string,
+  ): Promise<IProductLog[]> {
+    const logs = (await ProductLog.find({ product: productId })
+      .populate("user")
+      .sort({ createdAt: -1 })
+      .exec()) as IProductLog[];
+
+    const refineLogs = logs.map((log) => {
+      return {
+        _id: log._id,
+        text: log.text?.replace("__name__", log.user?.displayName || ""),
+        createdAt: log.createdAt,
+      };
+    });
+
+    return refineLogs;
   }
 
   @Security("jwtAuth")

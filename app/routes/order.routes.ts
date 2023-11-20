@@ -148,4 +148,17 @@ orderRouter.post(
   },
 );
 
+orderRouter.post(
+  "/return",
+  passport.authenticate("jwt", { session: false }),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const order = await OrderController.returnProduct(req.body, req.user as IUser);
+      return res.json(order);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
 export default orderRouter;
