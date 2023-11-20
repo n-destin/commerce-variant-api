@@ -44,3 +44,10 @@ export interface IProductFilter {
   categories: string[];
   colleges: string[];
 }
+
+export interface IProductLog {
+  _id: mongoose.Types.ObjectId;
+  text: string;
+  user?: IUser;
+  createdAt: Date;
+}

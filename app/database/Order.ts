@@ -32,5 +32,9 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  returnedDate: {
+    type: Date,
+    required: false,
+  },
 });
 export const Order = mongoose.model("Order", orderSchema);
