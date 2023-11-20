@@ -23,6 +23,7 @@ import CustomError from "../utils/CustomError";
 import { OrderCode } from "../database/OrderCode";
 import { generateOrderCode } from "../utils/codegenerator";
 import { ProductLog } from "../database/ProductLog";
+import moment from "moment";
 
 @Tags("Orders")
 @Route("api/orders")
@@ -52,7 +53,20 @@ export class OrderController extends Controller {
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<IOrderResponse> {
     const order = (
-      await Order.findOne({ ...condition }).populate(["orderer", "product"])
+      await Order.findOne({ ...condition })
+        .populate(["orderer", "product"])
+        .populate({
+          path: "product",
+          populate: {
+            path: "owner",
+          },
+        })
+        .populate({
+          path: "product",
+          populate: {
+            path: "purpose",
+          },
+        })
     )?.toObject() as IOrderResponse;
 
     return order;
@@ -199,9 +213,7 @@ export class OrderController extends Controller {
       .populate(["product"])
       .populate({
         path: "product",
-        populate: {
-          path: "owner",
-        },
+        populate: [{ path: "owner" }, { path: "purpose" }],
       })) as IOrderResponse;
     if (!order) throw new CustomError("Order not found");
     const orderCode = await OrderCode.findOne({ order: data.orderId });
@@ -211,12 +223,23 @@ export class OrderController extends Controller {
 
     const requester = order.product.owner?._id.toString();
     const owner = user._id.toString();
-    console.log(requester, "---", owner);
     if (requester != owner) {
       throw new CustomError("Access Denied", 403);
     }
+    const isRent = order.product?.purpose?.slug?.includes("RENT");
+    if (isRent) {
+      const expectedReturnDate = moment()
+        .add(order.days, "days")
+        .startOf("day")
+        .toDate();
 
-    await Order.findByIdAndUpdate(order._id, { deliveryStatus: "DELIVERED" });
+      await Order.findByIdAndUpdate(order._id, {
+        deliveryStatus: "DELIVERED",
+        expectedReturnDate: expectedReturnDate,
+      });
+    } else {
+      await Order.findByIdAndUpdate(order._id, { deliveryStatus: "DELIVERED" });
+    }
     await ProductLog.create({
       product: order.product._id,
       user: order.orderer,
