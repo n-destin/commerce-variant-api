@@ -17,6 +17,7 @@ import rentProductsRouter from "./rentProducts.routes";
 import donateProductsRouter from "./donateProducts.routes";
 import statisticsRouter from "./statistics.routes";
 import sliderRouter from "./slider.routes";
+import allUsersRouter from "./allUsers.routes";
 
 const apiRouter = express.Router();
 apiRouter.use("/example", exampleRouter);
@@ -37,4 +38,5 @@ apiRouter.use("/rent-products", rentProductsRouter);
 apiRouter.use("/donate-products", donateProductsRouter);
 apiRouter.use("/statistics", statisticsRouter);
 apiRouter.use("/sliders", sliderRouter);
+apiRouter.use("/all-users", allUsersRouter);
 export default apiRouter;

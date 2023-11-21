@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     ref: "College",
     required: false,
   },
+  isBanned: {
+    type: Boolean,
+    required: false,
+  },
 });
 
 export const User = mongoose.model("User", userSchema);
