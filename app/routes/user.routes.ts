@@ -18,12 +18,16 @@ userRouter.get(
   },
 );
 userRouter.put(
-  "/college/:college",
+  "/college",
   passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const college = req.params.college;
-      const profile = await UserController.attachCollege(req.user as IUser, college);
+      const college = req.body.college;
+      const phone = req.body.phone;
+      const profile = await UserController.attachCollege(
+        req.user as IUser,
+        req.body,
+      );
       return res.status(200).json(profile);
     } catch (error) {
       return next(error);

@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   id: String,
   provider: String,
   displayName: String,
+  phone: String,
   isAdmin: {
     type: Boolean,
     required: false,
