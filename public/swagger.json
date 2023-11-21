@@ -77,6 +77,9 @@
 					},
 					"college": {
 						"$ref": "#/components/schemas/ICollege"
+					},
+					"phone": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -919,6 +922,22 @@
 			},
 			"ObjectId": {
 				"type": "string"
+			},
+			"ICompleteProfile": {
+				"properties": {
+					"college": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"college",
+					"phone"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -931,12 +950,15 @@
 		}
 	},
 	"info": {
-		"title": "commerce-api",
+		"title": "TSOA",
 		"version": "1.0.0",
+		"description": "Build swagger-compliant REST APIs using TypeScript and Node",
 		"license": {
-			"name": "ISC"
+			"name": "MIT"
 		},
-		"contact": {}
+		"contact": {
+			"name": "unknown"
+		}
 	},
 	"openapi": "3.0.0",
 	"paths": {
@@ -2873,7 +2895,7 @@
 				"parameters": []
 			}
 		},
-		"/api/users/college/{collegeName}": {
+		"/api/users/college": {
 			"put": {
 				"operationId": "AttachCollege",
 				"responses": {
@@ -2904,6 +2926,9 @@
 													"type": "string"
 												},
 												"id": {
+													"type": "string"
+												},
+												"phone": {
 													"type": "string"
 												},
 												"name": {
@@ -2960,16 +2985,17 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "collegeName",
-						"required": true,
-						"schema": {
-							"type": "string"
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICompleteProfile"
+							}
 						}
 					}
-				]
+				}
 			}
 		}
 	},

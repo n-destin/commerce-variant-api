@@ -15,6 +15,11 @@ export interface IUser {
   emails?: Array<string>;
   photos?: Array<string>;
   college?: ICollege;
+  phone?: string;
 }
 
+export interface ICompleteProfile {
+  college: string;
+  phone: string;
+}
 export type CreateUserDto = Pick<IUser, "name" | "email">;

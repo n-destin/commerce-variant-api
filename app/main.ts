@@ -12,6 +12,7 @@ import { Server } from "socket.io";
 import { createServer } from "http"; // Use 'http' instead of 'node:http'
 import { ChatController } from "./controllers/chat.controller";
 import { MessageController } from "./controllers/message.controller";
+import { removePersonalInformation } from "./utils/openai";
 
 const app = express();
 const server = createServer(app);
@@ -63,8 +64,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-message", async ({ sender, ...data }, callback) => {
-    const message = await MessageController.createMessage(data, sender);
+    const message2 = { ...data, text: await removePersonalInformation(data.text) };
+    const message = await MessageController.createMessage(message2, sender);
     io.to(data.chat).emit("getMessage", message);
+    console.log(data);
+    console.log(message2);
     callback(data);
   });
 
@@ -74,13 +78,11 @@ io.on("connection", (socket) => {
         socket.join(chatId);
         const chats = await ChatController.getChatById(chatId);
         io.to(chatId).emit("chatHistory", chats);
-        console.log("client joined " + chatId);
       }
     } catch (error) {}
   });
 
   socket.on("sendMessage", (data) => {
-    console.log("message received", data);
     io.to(data.chat).emit("getMessage", data);
   });
 });
