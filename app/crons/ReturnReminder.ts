@@ -52,7 +52,8 @@ cron.schedule("0 5 * * *", async () => {
   try {
     await mongoose.connect(appConfig.databaseUrl);
 
-    const currentDate = moment().startOf("day");
+    const currentDate = new Date();
+    currentDate.setUTCHours(0, 0, 0, 0);
 
     const orders = (await Order.find({
       deliveryStatus: "DELIVERED",
@@ -71,10 +72,15 @@ cron.schedule("0 5 * * *", async () => {
       );
       if (userOrders) {
         userOrders.forEach(async (order) => {
-          const expectedReturnDate = moment(order.expectedReturnDate).startOf("day");
+          const expectedReturnDate = new Date(order.expectedReturnDate || "");
+          expectedReturnDate.setUTCHours(0, 0, 0, 0);
+
           if (expectedReturnDate && user.email) {
-            const daysUntilReturn = expectedReturnDate.diff(currentDate, "days");
-            console.log(daysUntilReturn, expectedReturnDate);
+            const timeDifference =
+              expectedReturnDate.getTime() - currentDate.getTime();
+            const daysUntilReturn = Math.ceil(
+              timeDifference / (1000 * 60 * 60 * 24),
+            );
 
             if (daysUntilReturn === 2) {
               await sendReminderEmail(
@@ -106,6 +112,7 @@ cron.schedule("0 5 * * *", async () => {
         });
       }
     });
+    await mongoose.disconnect();
   } catch (error) {
     console.error("Error in cron job:", error);
   }
