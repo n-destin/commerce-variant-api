@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
   email: String,
   emails: Array<string>,
   photos: Array<string>,
+  bankAccount: String,
+  bankName: String,
+  phoneNumber: String,
   college: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "College",
@@ -27,5 +30,4 @@ const userSchema = new mongoose.Schema({
     required: false,
   },
 });
-
 export const User = mongoose.model("User", userSchema);

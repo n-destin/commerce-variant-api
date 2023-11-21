@@ -34,4 +34,18 @@ export class UserController extends Controller {
     ).populate("college");
     return updatedUser;
   }
+
+  @Security("jwtAuth")
+  @Put("/{userId}")
+  public static async updateProfile(
+    @Path() userId: string,
+    @Body() userInfo: IUser,
+  ): Promise<IUser> {
+    const updated = (await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: userInfo },
+      { new: true },
+    )) as IUser;
+    return updated;
+  }
 }

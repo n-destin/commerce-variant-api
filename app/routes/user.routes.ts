@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { UserController } from "../controllers/User.controller";
 import { IUser } from "../types/User.type";
 import passport from "passport";
+import { checkUserExist } from "../middlewares/user.middleware";
 
 const userRouter = express.Router();
 userRouter.use(passport.authenticate("jwt", { session: false }));
@@ -29,6 +30,25 @@ userRouter.put(
         req.body,
       );
       return res.status(200).json(profile);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
+userRouter.put(
+  "/:userId",
+  checkUserExist,
+  passport.authenticate("jwt", { session: false }),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const updateUserProfile = await UserController.updateProfile(
+        req.params.userId,
+        {
+          ...req.body,
+        },
+      );
+      return res.status(200).json(updateUserProfile);
     } catch (error) {
       return next(error);
     }

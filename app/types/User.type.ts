@@ -6,6 +6,9 @@ export interface IUser {
   provider: string;
   displayName: string;
   isAdmin?: boolean;
+  bankName?: String;
+  bankAccount?: String;
+  phoneNumber?: String;
   name?: {
     familyName: string;
     givenName: string;
