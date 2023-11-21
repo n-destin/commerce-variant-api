@@ -36,5 +36,11 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
+  expectedReturnDate: {
+    type: Date,
+    required: false,
+  },
 });
+
+orderSchema.index({ deliverystatus: 1, days: 1, returndate: 1 });
 export const Order = mongoose.model("Order", orderSchema);

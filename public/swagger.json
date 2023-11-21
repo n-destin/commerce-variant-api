@@ -518,12 +518,6 @@
 					"phone": {
 						"type": "string"
 					},
-					"product": {
-						"$ref": "#/components/schemas/IProduct"
-					},
-					"orderer": {
-						"$ref": "#/components/schemas/IUser"
-					},
 					"days": {
 						"type": "number",
 						"format": "double"
@@ -531,6 +525,23 @@
 					"returnedDate": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"expectedReturnDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"product": {
+						"$ref": "#/components/schemas/IProduct"
+					},
+					"orderer": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/IUser"
+							},
+							{
+								"type": "string"
+							}
+						]
 					}
 				},
 				"required": [
@@ -571,6 +582,18 @@
 					},
 					"phone": {
 						"type": "string"
+					},
+					"days": {
+						"type": "number",
+						"format": "double"
+					},
+					"returnedDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"expectedReturnDate": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [

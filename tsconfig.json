@@ -9,8 +9,8 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["node"]
   },
-  "include": ["app", "app/middlewares/.gitkeep","declarations"],
-  "exclude": ["node_modules", "dist"],
+  "include": ["app", "app/**/*.ts", "app/middlewares/.gitkeep", "declarations"],
+  "exclude": ["node_modules", "dist"]
 }

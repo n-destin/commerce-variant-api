@@ -7,13 +7,14 @@ export interface IOrder {
   product: mongoose.Types.ObjectId;
   orderer: mongoose.Types.ObjectId;
   phone: string;
+  days?: number;
+  returnedDate?: Date;
+  expectedReturnDate?: Date;
 }
 
 export interface IOrderResponse extends Omit<IOrder, "product" | "orderer"> {
   product: IProduct;
-  orderer: IUser;
-  days?: number;
-  returnedDate?: Date;
+  orderer: IUser | string;
 }
 
 export interface IOrderDto extends Pick<IOrder, "product"> {

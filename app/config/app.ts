@@ -13,4 +13,7 @@ export const appConfig = {
   cloudName: process.env.CLOUD_NAME,
   frontEndUrl: process.env.FRONTEND_URL!,
   appUrl: process.env.APP_URL!,
+  mailerUsernmae: process.env.MAILER_USERNAME,
+  mailerPassword: process.env.MAILER_PASSWORD,
+  mailerService: process.env.MAILER_SERVICE,
 };
