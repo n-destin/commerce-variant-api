@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+// clientID: "",
+// clientSecret: "",
 export const appConfig = {
   environment: process.env.NODE_ENV as string,
   PORT: process.env.PORT || 4321,
@@ -16,4 +18,6 @@ export const appConfig = {
   mailerUsernmae: process.env.MAILER_USERNAME,
   mailerPassword: process.env.MAILER_PASSWORD,
   mailerService: process.env.MAILER_SERVICE,
+  microsoftClientId: process.env.MICROSOFT_CLIENT_ID!,
+  microsoftSecret: process.env.MICROSOFT_SECRET_KEY!,
 };

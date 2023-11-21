@@ -47,6 +47,7 @@ app.use(
 app.use("/api", apiRouter);
 initAuthStategies();
 passport.serializeUser((user, done) => {
+  console.log("userrrrrrrrrrrr");
   done(null, user);
 });
 

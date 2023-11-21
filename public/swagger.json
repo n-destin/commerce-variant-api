@@ -950,15 +950,12 @@
 		}
 	},
 	"info": {
-		"title": "TSOA",
+		"title": "commerce-api",
 		"version": "1.0.0",
-		"description": "Build swagger-compliant REST APIs using TypeScript and Node",
 		"license": {
-			"name": "MIT"
+			"name": "ISC"
 		},
-		"contact": {
-			"name": "unknown"
-		}
+		"contact": {}
 	},
 	"openapi": "3.0.0",
 	"paths": {

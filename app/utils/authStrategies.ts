@@ -1,7 +1,8 @@
-import passport from "passport";
+import passport, { DoneCallback, Profile } from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { authenticate, verifyToken } from "../helpers/auth";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
+import { Strategy as MicrosoftStrategy } from "passport-microsoft";
 import { appConfig } from "../config/app";
 
 export const initAuthStategies = () => {
@@ -16,6 +17,25 @@ export const initAuthStategies = () => {
       (accessToken, refreshToken, profile, cb) => authenticate(profile, cb),
     ),
   );
+
+  passport.use(
+    new MicrosoftStrategy(
+      {
+        clientID: appConfig.microsoftClientId,
+        clientSecret: appConfig.microsoftSecret,
+        callbackURL: "/api/auth/microsoft/redirect",
+        scope: ["openid", "User.Read"],
+      },
+      (
+        accessToken: string,
+        refreshToken: string,
+        profile: Profile,
+        cb: DoneCallback,
+      ) => authenticate(profile, cb),
+    ),
+  );
+
+  // ################################################
 
   passport.use(
     new JWTStrategy(
