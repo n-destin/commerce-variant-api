@@ -6,10 +6,10 @@ export interface IOrder {
   _id: string;
   product: mongoose.Types.ObjectId;
   orderer: mongoose.Types.ObjectId;
-  phone: string;
   days?: number;
   returnedDate?: Date;
   expectedReturnDate?: Date;
+  createdAt?: Date;
 }
 
 export interface IOrderResponse extends Omit<IOrder, "product" | "orderer"> {
