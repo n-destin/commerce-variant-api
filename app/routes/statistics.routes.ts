@@ -43,12 +43,14 @@ statisticsRouter.get(
 
       if (endDateString) {
         endDate = new Date(endDateString);
+        endDate.setHours(23, 59, 59, 999);
       }
 
       const dateCondition =
         startDate && endDate
           ? { createdAt: { $gte: startDate, $lte: endDate } }
           : {};
+      console.log(dateCondition);
       const stats = await StatisticsController.getOverview(
         user._id,
         user.isAdmin,

@@ -22,14 +22,26 @@ export class StatisticsController extends Controller {
   ): Promise<IStatisticOverview[]> {
     const myProducts = await Product.find({ owner: user });
     const myProductsIds = myProducts.map((product) => product._id);
-    const sellOrders = await Order.countDocuments({
+    const sellOrdersOngoing = await Order.countDocuments({
       product: { $in: myProductsIds },
+      paymentStatus: "PAID",
       deliveryStatus: "NOT_YET_DELIVERED",
       ...dateCondition,
     });
-    const orders = await Product.countDocuments({
+    const ordersOngoing = await Order.countDocuments({
       orderer: user,
+      paymentStatus: "PAID",
       deliveryStatus: "NOT_YET_DELIVERED",
+      ...dateCondition,
+    });
+    const sellOrders = await Order.countDocuments({
+      product: { $in: myProductsIds },
+      paymentStatus: "PAID",
+      ...dateCondition,
+    });
+    const orders = await Order.countDocuments({
+      orderer: user,
+      paymentStatus: "PAID",
       ...dateCondition,
     });
 
@@ -83,6 +95,8 @@ export class StatisticsController extends Controller {
       { slug: "PRODUCTS", number: myProducts.length, link: "products" },
       { slug: "SELLER_ORDERS", number: sellOrders, link: "orders" },
       { slug: "PURCHASE_ORDERS", number: orders, link: "orders" },
+      { slug: "ONGOING_SALES", number: sellOrdersOngoing, link: "orders" },
+      { slug: "ONGOING_PURCHASES", number: ordersOngoing, link: "orders" },
       { slug: "RENT_PRODUCTS", number: rentProducts, link: "products" },
       { slug: "DONATE_PRODUCTS", number: donateProducts, link: "products" },
       { slug: "SALES", number: sales.length ? sales[0].total : 0, link: "" },

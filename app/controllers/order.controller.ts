@@ -31,8 +31,8 @@ export class OrderController extends Controller {
   @Get("/")
   public static async getOrders(
     @Inject() condition: { [key: string]: string } = {},
-  ): Promise<IOrderResponse[]> {
-    return await Order.find({ ...condition })
+  ): Promise<unknown[]> {
+    const orders = await Order.find({ ...condition })
       .populate(["orderer", "product"])
       .populate({
         path: "product",
@@ -45,7 +45,10 @@ export class OrderController extends Controller {
         populate: {
           path: "purpose",
         },
-      });
+      })
+      .sort({ createdAt: -1 })
+      .exec();
+    return orders;
   }
 
   @Get("/{orderId}")
@@ -167,7 +170,9 @@ export class OrderController extends Controller {
         populate: {
           path: "condition",
         },
-      });
+      })
+      .sort({ createdAt: -1 })
+      .exec();
     return orders;
   }
   @Get("/buyer/{id}")
@@ -188,7 +193,9 @@ export class OrderController extends Controller {
         populate: {
           path: "condition",
         },
-      });
+      })
+      .sort({ createdAt: -1 })
+      .exec();
     return orders;
   }
   @Security("jwtAuth")
