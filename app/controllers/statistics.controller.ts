@@ -109,7 +109,10 @@ export class StatisticsController extends Controller {
     if (isAdmin) {
       const colleges = await College.countDocuments();
       const users = await User.countDocuments();
-      const adminStat = [{ slug: "USERS", number: users, link: "" }];
+      const adminStat = [
+        { slug: "USERS", number: users, link: "" },
+        { slug: "COLLEGES", number: colleges, link: "" },
+      ];
       return stat.concat(adminStat);
     }
     return stat;
