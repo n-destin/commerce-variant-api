@@ -830,6 +830,28 @@
 			"ProductDto": {
 				"$ref": "#/components/schemas/Omit_IProduct._id_"
 			},
+			"IHomepageProduct": {
+				"properties": {
+					"sale": {
+						"items": {
+							"$ref": "#/components/schemas/IProductResponse"
+						},
+						"type": "array"
+					},
+					"other": {
+						"items": {
+							"$ref": "#/components/schemas/IProductResponse"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"sale",
+					"other"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Pick_IPurpose.name_": {
 				"properties": {
 					"name": {
@@ -2275,6 +2297,56 @@
 				}
 			}
 		},
+		"/api/rent-products": {
+			"get": {
+				"operationId": "GetRentProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Rent Products"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/sale-products": {
+			"get": {
+				"operationId": "GetSaleProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Rent Products"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/products": {
 			"get": {
 				"operationId": "GetProducts",
@@ -2540,6 +2612,28 @@
 				"parameters": []
 			}
 		},
+		"/api/products/homepage": {
+			"get": {
+				"operationId": "GetHomepageProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IHomepageProduct"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/purpose": {
 			"get": {
 				"operationId": "GetPurpose",
@@ -2685,31 +2779,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/rent-products": {
-			"get": {
-				"operationId": "GetRentProducts",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IProductResponse"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Rent Products"
-				],
-				"security": [],
-				"parameters": []
 			}
 		},
 		"/api/search/{searchQuery}": {

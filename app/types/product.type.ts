@@ -51,3 +51,8 @@ export interface IProductLog {
   user?: IUser;
   createdAt: Date;
 }
+
+export interface IHomepageProduct {
+  sale: IProductResponse[];
+  other: IProductResponse[];
+}
