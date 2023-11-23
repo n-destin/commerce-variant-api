@@ -14,6 +14,19 @@ productRouter.get("/", async (req: Request, res: Response, next: NextFunction) =
     return next(error);
   }
 });
+
+productRouter.get(
+  "/homepage",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const products = await ProductController.getHomepageProducts();
+      return res.status(200).json(products);
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
 productRouter.post(
   "/",
   passport.authenticate("jwt", { session: false }),

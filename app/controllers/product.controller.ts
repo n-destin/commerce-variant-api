@@ -12,6 +12,7 @@ import {
   Inject,
 } from "tsoa";
 import {
+  IHomepageProduct,
   IProduct,
   IProductFilter,
   IProductLog,
@@ -24,6 +25,8 @@ import { Purpose } from "../database/Purpose";
 import CustomError from "../utils/CustomError";
 import { Order } from "../database/Order";
 import { ProductLog } from "../database/ProductLog";
+import { RentProductsController } from "./rentProducts.controller";
+import { SaleProductsController } from "./saleProducts.controller";
 
 @Tags("Products")
 @Route("api/products")
@@ -173,5 +176,14 @@ export class ProductController extends Controller {
       "category",
       "condition",
     ]);
+  }
+
+  @Get("/homepage")
+  public static async getHomepageProducts(): Promise<IHomepageProduct> {
+    const sale = new SaleProductsController();
+    const saleProducts = await sale.getSaleProducts(10);
+    const otherProducts = await sale.getOtherProducts(5);
+
+    return { sale: saleProducts, other: otherProducts };
   }
 }
