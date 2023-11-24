@@ -50,7 +50,6 @@ statisticsRouter.get(
         startDate && endDate
           ? { createdAt: { $gte: startDate, $lte: endDate } }
           : {};
-      console.log(dateCondition);
       const stats = await StatisticsController.getOverview(
         user._id,
         user.isAdmin,

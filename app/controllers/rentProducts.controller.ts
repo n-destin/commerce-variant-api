@@ -15,6 +15,7 @@ export class RentProductsController extends Controller {
     let products = limit
       ? await Product.find({ purpose: purpose, isAvailable: true })
           .limit(limit)
+          .sort({ createdAt: -1 })
           .exec()
       : await Product.find({ purpose: purpose, isAvailable: true });
     return (await Product.populate(products, [

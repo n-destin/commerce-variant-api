@@ -15,6 +15,7 @@ export class SaleProductsController extends Controller {
     let products = limit
       ? await Product.find({ purpose: purpose, isAvailable: true })
           .limit(limit)
+          .sort({ createdAt: -1 })
           .exec()
       : await Product.find({ purpose: purpose, isAvailable: true });
     return (await Product.populate(products, [
@@ -31,6 +32,7 @@ export class SaleProductsController extends Controller {
     let products = limit
       ? await Product.find({ purpose: { $ne: purpose }, isAvailable: true })
           .limit(limit)
+          .sort({ createdAt: -1 })
           .exec()
       : await Product.find({ purpose: purpose, isAvailable: true });
     return (await Product.populate(products, [

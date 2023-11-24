@@ -6,9 +6,11 @@ import { IOrderResponse } from "../types/order.type";
 import { Product } from "../database/Product";
 import { User } from "../database/User";
 import { Order } from "../database/Order";
-import { IStatisticOverview } from "../types/statistic.types";
+import { IStatistic, IStatisticOverview } from "../types/statistic.types";
 import { Purpose } from "../database/Purpose";
 import { College } from "../database/College";
+import { Stats } from "fs";
+import { OrderController } from "./order.controller";
 
 @Tags("Statistics")
 @Route("api/statistics")
@@ -19,7 +21,7 @@ export class StatisticsController extends Controller {
     @Inject() user: string,
     @Inject() isAdmin: boolean = false,
     @Inject() dateCondition: Record<string, any> = {},
-  ): Promise<IStatisticOverview[]> {
+  ): Promise<IStatistic> {
     const myProducts = await Product.find({ owner: user });
     const myProductsIds = myProducts.map((product) => product._id);
     const sellOrdersOngoing = await Order.countDocuments({
@@ -91,7 +93,7 @@ export class StatisticsController extends Controller {
       },
     ]);
 
-    const stat = [
+    const overview = [
       { slug: "PRODUCTS", number: myProducts.length, link: "products" },
       { slug: "SELLER_ORDERS", number: sellOrders, link: "orders" },
       { slug: "PURCHASE_ORDERS", number: orders, link: "orders" },
@@ -106,15 +108,23 @@ export class StatisticsController extends Controller {
         link: "",
       },
     ];
+    const stat: IStatistic = {};
+    stat.transactions = (await OrderController.getUserOrders(
+      user,
+      5,
+    )) as IOrderResponse[];
+
     if (isAdmin) {
       const colleges = await College.countDocuments();
       const users = await User.countDocuments();
-      const adminStat = [
+      const adminoverview = [
         { slug: "USERS", number: users, link: "" },
         { slug: "COLLEGES", number: colleges, link: "" },
       ];
-      return stat.concat(adminStat);
+      overview.concat(adminoverview);
     }
+    stat.overview = overview;
+
     return stat;
   }
 
