@@ -954,6 +954,24 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IStatistic": {
+				"properties": {
+					"overview": {
+						"items": {
+							"$ref": "#/components/schemas/IStatisticOverview"
+						},
+						"type": "array"
+					},
+					"transactions": {
+						"items": {
+							"$ref": "#/components/schemas/IOrderResponse"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"FlattenMaps_T_": {
 				"properties": {},
 				"type": "object"
@@ -2156,7 +2174,11 @@
 				"tags": [
 					"Orders"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -2185,7 +2207,11 @@
 				"tags": [
 					"Orders"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -2251,7 +2277,11 @@
 				"tags": [
 					"Orders"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -2283,7 +2313,11 @@
 				"tags": [
 					"Orders"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -2295,6 +2329,30 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/orders/transactions": {
+			"get": {
+				"operationId": "GetUserOrders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/api/rent-products": {
@@ -2440,7 +2498,9 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {},
+									"items": {
+										"$ref": "#/components/schemas/IProductResponse"
+									},
 									"type": "array"
 								}
 							}
@@ -2984,10 +3044,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IStatisticOverview"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/IStatistic"
 								}
 							}
 						}

@@ -141,6 +141,7 @@ export class OrderController extends Controller {
     )) as IOrder;
     return updated;
   }
+
   @Get("/{refId}/status")
   public static async updateStatus(@Path() refId: string, @Inject() status: string) {
     const order = await Order.findOne({ ref_id: refId });
@@ -150,6 +151,8 @@ export class OrderController extends Controller {
     await Order.findByIdAndUpdate(order._id, { paymentStatus: status });
     await Product.findByIdAndUpdate(order.product, { isAvailable: false });
   }
+
+  @Security("jwtAuth")
   @Get("/seller/{id}")
   public static async getSellersOrders(@Path() id: string): Promise<unknown> {
     const products = await Product.find({ owner: id }).select("_id");
@@ -175,6 +178,8 @@ export class OrderController extends Controller {
       .exec();
     return orders;
   }
+
+  @Security("jwtAuth")
   @Get("/buyer/{id}")
   public static async getBuyerOrders(@Path() id: string): Promise<unknown> {
     const orders = await Order.find({
@@ -198,6 +203,7 @@ export class OrderController extends Controller {
       .exec();
     return orders;
   }
+
   @Security("jwtAuth")
   @Get("/code/{id}")
   public static async getOrderCode(@Path() id: string) {
@@ -211,6 +217,8 @@ export class OrderController extends Controller {
       throw new CustomError("Server error");
     }
   }
+
+  @Security("jwtAuth")
   @Post("/confirm")
   public static async confirmOrder(
     @Body() data: IOrderConfirm,
@@ -255,6 +263,7 @@ export class OrderController extends Controller {
     return data;
   }
 
+  @Security("jwtAuth")
   @Post("/return")
   public static async returnProduct(
     @Body() data: IProductReturn,
@@ -269,5 +278,45 @@ export class OrderController extends Controller {
       text: "Product is returned and made available again",
     });
     return data;
+  }
+
+  @Security("jwtAuth")
+  @Get("/transactions")
+  public static async getUserOrders(
+    @Inject() id: string | undefined = undefined,
+    @Inject() limit: number | undefined = undefined,
+  ): Promise<unknown> {
+    const condition: { [key: string]: any } = {};
+
+    if (id) {
+      condition.$or = [];
+      const products = await Product.find({ owner: id }).select("_id");
+      const productIds = products.map((product) => product._id);
+      condition.$or.push({ product: { $in: productIds } });
+      condition.$or.push({ orderer: id });
+      condition.paymentStatus = "PAID";
+    }
+
+    const orders = limit
+      ? await Order.find({
+          ...condition,
+        })
+          .limit(limit)
+          .sort({ createdAt: -1 })
+          .exec()
+      : await Order.find({
+          ...condition,
+        })
+          .sort({ createdAt: -1 })
+          .exec();
+    const populatedOrders = await Order.populate(orders, [
+      { path: "orderer" },
+      { path: "product" },
+      {
+        path: "product",
+        populate: [{ path: "owner" }, { path: "purpose" }],
+      },
+    ]);
+    return populatedOrders;
   }
 }

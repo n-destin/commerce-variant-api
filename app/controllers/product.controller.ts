@@ -33,29 +33,27 @@ import { SaleProductsController } from "./saleProducts.controller";
 export class ProductController extends Controller {
   @Get("/")
   public static async getProducts(): Promise<IProductResponse[]> {
-    return await Product.find({ isAvailable: true }).populate([
-      "category",
-      "condition",
-      "purpose",
-    ]);
+    return (await Product.find({ isAvailable: true })
+      .populate(["category", "condition", "purpose"])
+      .sort({ createdAt: -1 })
+      .exec()) as IProductResponse[];
   }
 
   @Get("/my-products")
   public static async getMyProducts(
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<IProductResponse[]> {
-    return await Product.find({ ...condition }).populate([
-      "category",
-      "condition",
-      "purpose",
-    ]);
+    return (await Product.find({ ...condition })
+      .populate(["category", "condition", "purpose"])
+      .sort({ createdAt: -1 })
+      .exec()) as IProductResponse[];
   }
 
   @Post("/filter")
   public static async filterProducts(
     @Body() filter: IProductFilter,
     @Inject() condition: { [key: string]: any } = {},
-  ): Promise<any[]> {
+  ): Promise<IProductResponse[]> {
     const { categories, colleges } = filter;
     if (categories && categories.length > 0) {
       condition.category = { $in: categories };
@@ -63,7 +61,9 @@ export class ProductController extends Controller {
 
     const data = (await Product.find({ ...condition, isAvailable: true })
       .populate({ path: "owner", select: "college" })
-      .populate(["category", "condition", "purpose"])) as IProductResponse[];
+      .populate(["category", "condition", "purpose"])
+      .sort({ createdAt: -1 })
+      .exec()) as IProductResponse[];
 
     if (colleges && colleges.length > 0) {
       const filteredProducts = data.filter((product) => {

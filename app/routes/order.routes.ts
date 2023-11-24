@@ -16,6 +16,19 @@ orderRouter.get("/", async (req: Request, res: Response, next: NextFunction) => 
     return next(error);
   }
 });
+
+orderRouter.get(
+  "/transactions",
+  passport.authenticate("jwt", { session: false }),
+  async (req: Request, res: Response) => {
+    const user = req.user as IUser;
+    const orders = await OrderController.getUserOrders(
+      user?.isAdmin ? undefined : user._id,
+    );
+    return res.json(orders);
+  },
+);
+
 orderRouter.post(
   "/",
   passport.authenticate("jwt", { session: false }),
