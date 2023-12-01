@@ -42,6 +42,15 @@
 					"isAdmin": {
 						"type": "boolean"
 					},
+					"bankName": {
+						"type": "string"
+					},
+					"bankAccount": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
 					"name": {
 						"properties": {
 							"middleName": {
@@ -3198,6 +3207,15 @@
 												"isAdmin": {
 													"type": "boolean"
 												},
+												"phoneNumber": {
+													"type": "string"
+												},
+												"bankName": {
+													"type": "string"
+												},
+												"bankAccount": {
+													"type": "string"
+												},
 												"email": {
 													"type": "string"
 												},
@@ -3274,6 +3292,51 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ICompleteProfile"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/users/{userId}": {
+			"put": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
 							}
 						}
 					}
