@@ -19,6 +19,22 @@ export interface IUser {
   photos?: Array<string>;
   college?: ICollege;
   phone?: string;
+  isVerified?: boolean
+}
+
+export interface IProfile {
+  name?: {
+    familyName: string;
+    givenName: string;
+    middleName?: string;
+  };
+  password?: string;
+  email?: string;
+}
+
+export interface ILogin {
+  password?: string;
+  email?: string;
 }
 
 export interface ICompleteProfile {

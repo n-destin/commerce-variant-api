@@ -89,6 +89,9 @@
 					},
 					"phone": {
 						"type": "string"
+					},
+					"isVerified": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -114,6 +117,59 @@
 					"accessToken",
 					"user"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfile": {
+				"properties": {
+					"name": {
+						"properties": {
+							"middleName": {
+								"type": "string"
+							},
+							"givenName": {
+								"type": "string"
+							},
+							"familyName": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"givenName",
+							"familyName"
+						],
+						"type": "object"
+					},
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"Document_any.any.any_": {
+				"$ref": "#/components/schemas/FlattenMaps_T_",
+				"description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
+			},
+			"ObjectId": {
+				"type": "string"
+			},
+			"ILogin": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -368,11 +424,14 @@
 			},
 			"IProductResponse": {
 				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
 					"name": {
 						"type": "string"
 					},
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					"description": {
+						"type": "string"
 					},
 					"thumbnail": {
 						"type": "string"
@@ -386,9 +445,6 @@
 					"price": {
 						"type": "number",
 						"format": "double"
-					},
-					"description": {
-						"type": "string"
 					},
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
@@ -443,27 +499,27 @@
 					}
 				},
 				"required": [
-					"name",
 					"_id",
+					"name",
+					"description",
 					"thumbnail",
-					"gallery",
-					"description"
+					"gallery"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
 			"Pick_IMessage.chat-or-text_": {
 				"properties": {
-					"chat": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
 					"text": {
 						"type": "string"
+					},
+					"chat": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					}
 				},
 				"required": [
-					"chat",
-					"text"
+					"text",
+					"chat"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
@@ -669,11 +725,14 @@
 			},
 			"ISingleProductResponse": {
 				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
 					"name": {
 						"type": "string"
 					},
-					"_id": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					"description": {
+						"type": "string"
 					},
 					"thumbnail": {
 						"type": "string"
@@ -687,9 +746,6 @@
 					"price": {
 						"type": "number",
 						"format": "double"
-					},
-					"description": {
-						"type": "string"
 					},
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
@@ -753,11 +809,11 @@
 					}
 				},
 				"required": [
-					"name",
 					"_id",
+					"name",
+					"description",
 					"thumbnail",
 					"gallery",
-					"description",
 					"similar"
 				],
 				"type": "object",
@@ -792,6 +848,9 @@
 					"name": {
 						"type": "string"
 					},
+					"description": {
+						"type": "string"
+					},
 					"condition": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
@@ -811,9 +870,6 @@
 						"type": "number",
 						"format": "double"
 					},
-					"description": {
-						"type": "string"
-					},
 					"purpose": {
 						"$ref": "#/components/schemas/IPurpose"
 					},
@@ -823,11 +879,11 @@
 				},
 				"required": [
 					"name",
+					"description",
 					"condition",
 					"category",
 					"thumbnail",
-					"gallery",
-					"description"
+					"gallery"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
@@ -910,13 +966,13 @@
 			},
 			"Pick_ISlider.Exclude_keyofISlider._id__": {
 				"properties": {
+					"type": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
 					"photo": {
-						"type": "string"
-					},
-					"type": {
 						"type": "string"
 					},
 					"title": {
@@ -927,9 +983,9 @@
 					}
 				},
 				"required": [
+					"type",
 					"description",
 					"photo",
-					"type",
 					"title",
 					"sliderStatus"
 				],
@@ -980,17 +1036,6 @@
 				},
 				"type": "object",
 				"additionalProperties": false
-			},
-			"FlattenMaps_T_": {
-				"properties": {},
-				"type": "object"
-			},
-			"Document_any.any.any_": {
-				"$ref": "#/components/schemas/FlattenMaps_T_",
-				"description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
-			},
-			"ObjectId": {
-				"type": "string"
 			},
 			"ICompleteProfile": {
 				"properties": {
@@ -1226,6 +1271,223 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/api/auth/signup": {
+			"post": {
+				"operationId": "CreateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfile"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/signin": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"userInfo": {
+													"allOf": [
+														{
+															"$ref": "#/components/schemas/Document_any.any.any_"
+														},
+														{
+															"properties": {
+																"isBanned": {
+																	"type": "boolean"
+																},
+																"college": {
+																	"$ref": "#/components/schemas/ObjectId"
+																},
+																"password": {
+																	"type": "string"
+																},
+																"name": {
+																	"properties": {
+																		"middleName": {
+																			"type": "string"
+																		},
+																		"givenName": {
+																			"type": "string"
+																		},
+																		"familyName": {
+																			"type": "string"
+																		}
+																	},
+																	"type": "object"
+																},
+																"isAdmin": {
+																	"type": "boolean"
+																},
+																"phoneNumber": {
+																	"type": "string"
+																},
+																"bankName": {
+																	"type": "string"
+																},
+																"bankAccount": {
+																	"type": "string"
+																},
+																"email": {
+																	"type": "string"
+																},
+																"phone": {
+																	"type": "string"
+																},
+																"displayName": {
+																	"type": "string"
+																},
+																"provider": {
+																	"type": "string"
+																},
+																"id": {
+																	"type": "string"
+																},
+																"isVerified": {
+																	"type": "boolean"
+																},
+																"photos": {
+																	"items": {},
+																	"type": "array"
+																},
+																"emails": {
+																	"items": {},
+																	"type": "array"
+																}
+															},
+															"required": [
+																"isVerified",
+																"photos",
+																"emails"
+															],
+															"type": "object"
+														},
+														{
+															"properties": {
+																"_id": {
+																	"$ref": "#/components/schemas/ObjectId"
+																}
+															},
+															"required": [
+																"_id"
+															],
+															"type": "object"
+														}
+													]
+												},
+												"data": {},
+												"status": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"userInfo",
+												"data",
+												"status"
+											],
+											"type": "object"
+										},
+										{
+											"properties": {
+												"userInfo": {},
+												"data": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"data",
+												"status"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ILogin"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/verify/{userId}": {
+			"get": {
+				"operationId": "UserVerify",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/api/categories": {
@@ -3204,6 +3466,23 @@
 												"college": {
 													"$ref": "#/components/schemas/ObjectId"
 												},
+												"password": {
+													"type": "string"
+												},
+												"name": {
+													"properties": {
+														"middleName": {
+															"type": "string"
+														},
+														"givenName": {
+															"type": "string"
+														},
+														"familyName": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
 												"isAdmin": {
 													"type": "boolean"
 												},
@@ -3231,19 +3510,8 @@
 												"id": {
 													"type": "string"
 												},
-												"name": {
-													"properties": {
-														"middleName": {
-															"type": "string"
-														},
-														"givenName": {
-															"type": "string"
-														},
-														"familyName": {
-															"type": "string"
-														}
-													},
-													"type": "object"
+												"isVerified": {
+													"type": "boolean"
 												},
 												"photos": {
 													"items": {},
@@ -3255,6 +3523,7 @@
 												}
 											},
 											"required": [
+												"isVerified",
 												"photos",
 												"emails"
 											],
