@@ -27,10 +27,8 @@ const sendReminderEmail = async (
     reminderMessage +
     `\nExpected return date: \t${order.expectedReturnDate
       ?.toISOString()
-      .slice(0, 10)}\n\nThis is a reminder for order with ref #${
-      order._id
-    }.\nTo view details visit ${appConfig.frontEndUrl}/dashboard/orders?orderId=${
-      order._id
+      .slice(0, 10)}\n\nThis is a reminder for order with ref #${order._id
+    }.\nTo view details visit ${appConfig.frontEndUrl}/dashboard/orders?orderId=${order._id
     }`;
   const mailOptions = {
     from: appConfig.mailerUsernmae,

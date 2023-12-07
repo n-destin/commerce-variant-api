@@ -6,6 +6,7 @@ import { checkUserExist } from "../middlewares/user.middleware";
 
 const userRouter = express.Router();
 userRouter.use(passport.authenticate("jwt", { session: false }));
+
 userRouter.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
@@ -54,4 +55,5 @@ userRouter.put(
     }
   },
 );
+
 export default userRouter;

@@ -13,13 +13,16 @@ import { ICompleteProfile, IUser } from "../types/User.type";
 import { College } from "../database/College";
 import { User } from "../database/User";
 @Tags("Users")
-@Security("jwtAuth")
+
 @Route("api/users")
 export class UserController extends Controller {
+  @Security("jwtAuth")
   @Get("/profile")
   public static async getMyProfile(@Inject() user: IUser): Promise<IUser> {
     return user;
   }
+
+  @Security("jwtAuth")
   @Put("/college")
   public static async attachCollege(
     @Inject() user: IUser,
