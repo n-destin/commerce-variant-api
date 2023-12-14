@@ -35,6 +35,7 @@ export interface IProfile {
 export interface ILogin {
   password?: string;
   email?: string;
+  userId?: string;
 }
 
 export interface ICompleteProfile {

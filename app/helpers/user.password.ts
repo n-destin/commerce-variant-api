@@ -21,3 +21,8 @@ export function generateToken(payload: any, expiresIn: string) {
   const token = jwt.sign(payload, appConfig.secretKey, { expiresIn });
   return token;
 }
+
+export function decodeToken(token: string) {
+  const tokenInfo = jwt.decode(token);
+  return tokenInfo;
+}

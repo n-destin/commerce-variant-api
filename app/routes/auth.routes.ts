@@ -8,6 +8,7 @@ import { NextFunction, Request, Response } from "express";
 import { userExist } from "../middlewares/auth.middleware";
 import { getValidationResult } from "../validation/result.validation";
 import { generateAuthToken } from "../helpers/auth";
+import { checkUserIdExist } from "../middlewares/reset.password.middleware";
 
 const authRouter = Router();
 authRouter.get(
@@ -78,6 +79,24 @@ authRouter.post("/signin", async (req: Request, res: Response, next: NextFunctio
   try {
     const user = await AuthController.login(req.body);
     return res.status(user.status).json(user.data);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+authRouter.post("/forgot-password", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await AuthController.forgotPassword(req.body);
+    return res.status(user.status).json(user.data);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+authRouter.put("/reset-password", checkUserIdExist, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await AuthController.resetPassword(req.body);
+    return res.status(200).json(user);
   } catch (error) {
     return next(error);
   }
