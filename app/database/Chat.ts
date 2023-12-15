@@ -13,6 +13,9 @@ const chatSchema = new mongoose.Schema({
     ref: "User",
   },
   acceptedPrice: Number,
-});
+},
+  {
+    timestamps: true
+  });
 
 export const Chat = mongoose.model("Chat", chatSchema);
