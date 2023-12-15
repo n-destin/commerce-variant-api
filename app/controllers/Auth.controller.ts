@@ -56,6 +56,39 @@ export class AuthController extends Controller {
     return { status: 409, data: "Your credentials is not verify" }
   }
 
+  @Post("/forgot-password")
+  public static async forgotPassword(@Body() user: ILogin) {
+    const userInfo = await User.findOne({ email: user.email }) as unknown as IUser;
+    const accessToken = generateAuthToken(userInfo._id)
+    if (userInfo?.email) {
+      const message = `We are sending you this email because you requested a password reset.
+      Click on the link below to create a new password ${appConfig.resetPassword}?token=${accessToken}`
+      sendEmail(userInfo.email,
+        message,
+        'Reset Password'
+      )
+      return { status: 200, data: "Please check your email for instruction to change your password" }
+    }
+    return { status: 409, data: "Invalid Email" }
+  }
+
+  @Post("/reset-password")
+  public static async resetPassword(@Body() user: ILogin) {
+    const userProfile = {
+      ...user,
+      isVerified: true,
+      password: hashPassword(user.password!),
+    }
+
+    const updated = (await User.findOneAndUpdate(
+      { _id: userProfile.userId },
+      { $set: userProfile },
+      { new: true },
+    )) as ILogin;
+
+    return updated
+  }
+
   @Get("/verify/{userId}")
   public static async userVerify(
     @Path() userId: string,

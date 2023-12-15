@@ -21,5 +21,6 @@ export const appConfig = {
   microsoftClientId: process.env.MICROSOFT_CLIENT_ID!,
   microsoftSecret: process.env.MICROSOFT_SECRET_KEY!,
   userVerifyLink: process.env.USER_VERIFY_LINK,
-  secretKey: process.env.SECRETE_KEY
+  secretKey: process.env.SECRETE_KEY,
+  resetPassword: process.env.USER_RESET_PASSWORD
 };
