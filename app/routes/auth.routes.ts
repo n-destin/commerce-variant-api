@@ -102,10 +102,10 @@ authRouter.put("/reset-password", checkUserIdExist, async (req: Request, res: Re
   }
 });
 
-authRouter.get("/verify/:userId", async (req: Request, res: Response, next: NextFunction) => {
+authRouter.get("/verify", checkUserIdExist, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await AuthController.userVerify(req.params.userId);
-    const accessToken = await generateAuthToken(user._id)
+    const user = await AuthController.userVerify(req.body);
+    const accessToken = generateAuthToken(user._id)
     const redirectUrl = `${appConfig.frontEndUrl}/auth/redirect?token=${accessToken}`;
     return res.redirect(redirectUrl);
   } catch (error) {

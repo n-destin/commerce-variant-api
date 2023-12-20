@@ -32,6 +32,10 @@ export interface IProfile {
   email?: string;
 }
 
+export interface isVerified {
+  userId?: string;
+}
+
 export interface ILogin {
   password?: string;
   email?: string;

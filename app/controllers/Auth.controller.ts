@@ -1,4 +1,4 @@
-import { ILogin, IProfile, IUser } from "./../types/User.type";
+import { ILogin, IProfile, IUser, isVerified } from "./../types/User.type";
 import { Route, Controller, Get, Tags, Inject, Post, Body, Put, Path } from "tsoa";
 import { ILoginResponse } from "../types/auth";
 import { generateAuthToken } from "../helpers/auth";
@@ -32,7 +32,10 @@ export class AuthController extends Controller {
     }
 
     const userInfo = await User.create(userProfile) as unknown as IUser
-    const message = `You can easily verify your account by clicking on the following link: ${appConfig.userVerifyLink}/${userInfo._id}`
+
+    const accessToken = generateAuthToken(userInfo._id)
+
+    const message = `You can easily verify your account by clicking on the following link: ${appConfig.userVerifyLink}?token=${accessToken}`
     if (userInfo) {
       sendEmail(userInfo.email,
         message,
@@ -89,13 +92,13 @@ export class AuthController extends Controller {
     return updated
   }
 
-  @Get("/verify/{userId}")
+  @Get("/verify")
   public static async userVerify(
-    @Path() userId: string,
+    @Inject() userInfo: isVerified,
   ): Promise<IUser> {
     const isVerified = { isVerified: true }
     const updated = (await User.findOneAndUpdate(
-      { _id: userId },
+      { _id: userInfo.userId },
       { $set: isVerified },
       { new: true },
     )) as IUser;
