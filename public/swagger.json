@@ -1539,7 +1539,7 @@
 				}
 			}
 		},
-		"/api/auth/verify/{userId}": {
+		"/api/auth/verify": {
 			"get": {
 				"operationId": "UserVerify",
 				"responses": {
@@ -1558,16 +1558,7 @@
 					"Authentication"
 				],
 				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
+				"parameters": []
 			}
 		},
 		"/api/categories": {
