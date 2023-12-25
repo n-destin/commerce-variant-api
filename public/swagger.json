@@ -3207,6 +3207,9 @@
 												"isAdmin": {
 													"type": "boolean"
 												},
+												"status": {
+													"type": "string"
+												},
 												"phoneNumber": {
 													"type": "string"
 												},

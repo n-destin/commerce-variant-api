@@ -9,14 +9,17 @@ export interface Image {
 export interface IProduct {
   _id: mongoose.Types.ObjectId;
   name: string;
+  allowbargaining : Boolean;
+  brand: String;
   thumbnail: string;
   gallery: Array<Image>;
   price?: number;
   condition: mongoose.Types.ObjectId;
   category: mongoose.Types.ObjectId;
-  description: string;
-  purpose?: IPurpose;
+  description: string; 
+  purpose?: IPurpose; 
   owner?: IUser;
+  offersmade : Array<mongoose.Types.ObjectId>; // keep track of the offers made on a product
 }
 export type ProductDto = Omit<IProduct, "_id">;
 export interface IProductResponse extends Omit<IProduct, "condition" | "category"> {

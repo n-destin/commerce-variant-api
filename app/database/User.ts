@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   id: String,
-  provider: String,
+  provider: String, // who is provider?
+  type : {type: String, enum: {Seller: "Seller", Buyer : "Buyer"}},
   displayName: String,
   phone: String,
   isAdmin: {
@@ -15,7 +16,7 @@ const userSchema = new mongoose.Schema({
     middleName: String,
   },
   email: String,
-  emails: Array<string>,
+  emails: Array<string>, // other emails
   photos: Array<string>,
   bankAccount: String,
   bankName: String,
