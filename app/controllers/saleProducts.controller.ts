@@ -18,12 +18,11 @@ export class SaleProductsController extends Controller {
           .sort({ createdAt: -1 })
           .exec()
       : await Product.find({ purpose: purpose, isAvailable: true });
-    const unknownArray : unknown = (await Product.populate(products, [
+
+    return (await Product.populate(products, [
       { path: "condition" },
       { path: "purpose" },
-    ]));
-    const toReturn : IProductResponse[] = unknownArray as IProductResponse[];
-    return toReturn;
+    ])) as unknown as IProductResponse[];
   }
 
   public async getOtherProducts(
@@ -37,11 +36,9 @@ export class SaleProductsController extends Controller {
           .sort({ createdAt: -1 })
           .exec()
       : await Product.find({ purpose: purpose, isAvailable: true });
-      const unknownArray : unknown = (await Product.populate(products, [
-        { path: "condition" },
-        { path: "purpose" },
-      ]));
-      const toReturn : IProductResponse[] = unknownArray as IProductResponse[];
-      return toReturn;
+    return (await Product.populate(products, [
+      { path: "condition" },
+      { path: "purpose" },
+    ])) as unknown as IProductResponse[];
   }
 }

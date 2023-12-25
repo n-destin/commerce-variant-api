@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import {
   Route,
   Controller,
@@ -28,30 +27,26 @@ import { Order } from "../database/Order";
 import { ProductLog } from "../database/ProductLog";
 import { RentProductsController } from "./rentProducts.controller";
 import { SaleProductsController } from "./saleProducts.controller";
-import { User } from "../database/User";
-import { plainToClass } from 'class-transformer'
 
 @Tags("Products")
 @Route("api/products")
 export class ProductController extends Controller {
   @Get("/")
   public static async getProducts(): Promise<IProductResponse[]> {
-    const unknownArray : unknown = (await Product.find({ isAvailable: true })
+    return (await Product.find({ isAvailable: true })
       .populate(["category", "condition", "purpose"])
       .sort({ createdAt: -1 })
-      .exec())
-      return unknownArray as IProductResponse[];
+      .exec()) as unknown as IProductResponse[];
   }
 
   @Get("/my-products")
   public static async getMyProducts(
     @Inject() condition: { [key: string]: string } = {},
   ): Promise<IProductResponse[]> {
-    const conditionsUnknownArray : unknown = (await Product.find({ ...condition })
+    return (await Product.find({ ...condition })
       .populate(["category", "condition", "purpose"])
       .sort({ createdAt: -1 })
-      .exec());
-      return conditionsUnknownArray as IProductResponse[];
+      .exec()) as unknown as IProductResponse[];
   }
 
   @Post("/filter")
@@ -68,16 +63,16 @@ export class ProductController extends Controller {
       .populate({ path: "owner", select: "college" })
       .populate(["category", "condition", "purpose"])
       .sort({ createdAt: -1 })
-      .exec()) as IProductResponse[];
+      .exec()) as unknown as IProductResponse[];
 
     if (colleges && colleges.length > 0) {
-      const filteredProducts = data.filter(async (product) => {
-        const owner = await User.findById(product?.owner)
-        const collegeId = owner?.college?.toString();
+      const filteredProducts = data.filter((product) => {
+        const collegeId = product?.owner?.college?.toString();
         return collegeId !== undefined && colleges.includes(collegeId);
       });
       return filteredProducts;
     }
+
     return data;
   }
 

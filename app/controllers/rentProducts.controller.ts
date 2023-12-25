@@ -21,6 +21,6 @@ export class RentProductsController extends Controller {
     return (await Product.populate(products, [
       { path: "condition" },
       { path: "purpose" },
-    ])) as IProductResponse[];
+    ])) as unknown as IProductResponse[];
   }
 }
