@@ -3,6 +3,12 @@ import passport from "passport";
 import { AuthController } from "../controllers/Auth.controller";
 import { IUser } from "../types/User.type";
 import { appConfig } from "../config/app";
+import { userValidation } from "../validation/user.validation";
+import { NextFunction, Request, Response } from "express";
+import { userExist } from "../middlewares/auth.middleware";
+import { getValidationResult } from "../validation/result.validation";
+import { generateAuthToken } from "../helpers/auth";
+import { checkUserIdExist } from "../middlewares/reset.password.middleware";
 
 const authRouter = Router();
 authRouter.get(
@@ -41,7 +47,6 @@ authRouter.get(
   passport.authenticate("microsoft", { failureRedirect: "/" }),
   async (req, res, next) => {
     try {
-      console.log("oooooooooooo");
       const user = req?.user as IUser;
       if (!user.email.endsWith(".edu")) {
         // Remove ! for this to work
@@ -59,6 +64,53 @@ authRouter.get(
 authRouter.get("/error", (req, res) => {
   const error = req.query.error;
   return res.status(403).json({ error: error });
+});
+
+authRouter.post("/signup", userValidation["users"], getValidationResult, userExist, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const profileInfo = await AuthController.createProfile(req.body);
+    return res.status(200).json(profileInfo);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+authRouter.post("/signin", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await AuthController.login(req.body);
+    return res.status(user.status).json(user.data);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+authRouter.post("/forgot-password", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await AuthController.forgotPassword(req.body);
+    return res.status(user.status).json(user.data);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+authRouter.put("/reset-password", checkUserIdExist, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await AuthController.resetPassword(req.body);
+    return res.status(200).json(user);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+authRouter.get("/verify", checkUserIdExist, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await AuthController.userVerify(req.body);
+    const accessToken = generateAuthToken(user._id)
+    const redirectUrl = `${appConfig.frontEndUrl}/auth/redirect?token=${accessToken}`;
+    return res.redirect(redirectUrl);
+  } catch (error) {
+    return next(error);
+  }
 });
 
 export default authRouter;

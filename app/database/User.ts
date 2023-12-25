@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
   },
   email: String,
   emails: Array<string>, // other emails
+  password: {
+    type: String,
+    required: false,
+  },
   photos: Array<string>,
   bankAccount: String,
   bankName: String,
@@ -30,5 +34,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: false,
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  }
 });
 export const User = mongoose.model("User", userSchema);
