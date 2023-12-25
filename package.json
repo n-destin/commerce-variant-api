@@ -7,7 +7,7 @@
     "predev": "pnpm run swagger",
     "swagger": "tsoa spec",
     "build": "tsc",
-    "start": "node dist/app/main.ts",
+    "start": "node dist/main.ts",
     "dev": "concurrently \"nodemon \" \"nodemon -x tsoa spec\"",
     "return-reminder": "pnpm run build && node dist/crons/ReturnReminder.js"
   },
