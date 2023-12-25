@@ -148,6 +148,11 @@
 			"ICreateCategory": {
 				"$ref": "#/components/schemas/Pick_ICategory.name_"
 			},
+			"Boolean": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Image": {
 				"properties": {
 					"url": {
@@ -188,6 +193,12 @@
 					"name": {
 						"type": "string"
 					},
+					"allowbargaining": {
+						"$ref": "#/components/schemas/Boolean"
+					},
+					"brand": {
+						"type": "string"
+					},
 					"thumbnail": {
 						"type": "string"
 					},
@@ -215,16 +226,25 @@
 					},
 					"owner": {
 						"$ref": "#/components/schemas/IUser"
+					},
+					"offersmade": {
+						"items": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"_id",
 					"name",
+					"allowbargaining",
+					"brand",
 					"thumbnail",
 					"gallery",
 					"condition",
 					"category",
-					"description"
+					"description",
+					"offersmade"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -374,6 +394,12 @@
 					"_id": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
+					"allowbargaining": {
+						"$ref": "#/components/schemas/Boolean"
+					},
+					"brand": {
+						"type": "string"
+					},
 					"thumbnail": {
 						"type": "string"
 					},
@@ -395,6 +421,12 @@
 					},
 					"owner": {
 						"$ref": "#/components/schemas/IUser"
+					},
+					"offersmade": {
+						"items": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						},
+						"type": "array"
 					},
 					"condition": {
 						"properties": {
@@ -445,9 +477,12 @@
 				"required": [
 					"name",
 					"_id",
+					"allowbargaining",
+					"brand",
 					"thumbnail",
 					"gallery",
-					"description"
+					"description",
+					"offersmade"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -675,6 +710,12 @@
 					"_id": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
+					"allowbargaining": {
+						"$ref": "#/components/schemas/Boolean"
+					},
+					"brand": {
+						"type": "string"
+					},
 					"thumbnail": {
 						"type": "string"
 					},
@@ -696,6 +737,12 @@
 					},
 					"owner": {
 						"$ref": "#/components/schemas/IUser"
+					},
+					"offersmade": {
+						"items": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						},
+						"type": "array"
 					},
 					"condition": {
 						"properties": {
@@ -755,9 +802,12 @@
 				"required": [
 					"name",
 					"_id",
+					"allowbargaining",
+					"brand",
 					"thumbnail",
 					"gallery",
 					"description",
+					"offersmade",
 					"similar"
 				],
 				"type": "object",
@@ -798,6 +848,12 @@
 					"category": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
+					"allowbargaining": {
+						"$ref": "#/components/schemas/Boolean"
+					},
+					"brand": {
+						"type": "string"
+					},
 					"thumbnail": {
 						"type": "string"
 					},
@@ -819,15 +875,24 @@
 					},
 					"owner": {
 						"$ref": "#/components/schemas/IUser"
+					},
+					"offersmade": {
+						"items": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"name",
 					"condition",
 					"category",
+					"allowbargaining",
+					"brand",
 					"thumbnail",
 					"gallery",
-					"description"
+					"description",
+					"offersmade"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
@@ -3207,9 +3272,6 @@
 												"isAdmin": {
 													"type": "boolean"
 												},
-												"status": {
-													"type": "string"
-												},
 												"phoneNumber": {
 													"type": "string"
 												},
@@ -3229,6 +3291,9 @@
 													"type": "string"
 												},
 												"provider": {
+													"type": "string"
+												},
+												"type": {
 													"type": "string"
 												},
 												"id": {

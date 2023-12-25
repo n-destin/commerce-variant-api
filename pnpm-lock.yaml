@@ -95,7 +95,7 @@ devDependencies:
     specifier: ^1.17.9
     version: 1.17.10
   '@types/node':
-    specifier: ^20.3.1
+    specifier: ^20.9.1
     version: 20.9.1
   '@types/node-cron':
     specifier: ^3.0.11
