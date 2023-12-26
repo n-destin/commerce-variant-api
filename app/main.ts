@@ -22,7 +22,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
-app.enable('trust proxy');
+
 app.use(cors());
 app.use(
   session({
