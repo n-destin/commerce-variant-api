@@ -31,7 +31,7 @@ app.use(
     saveUninitialized: false,
   }),
 );
-
+app.enable("trust proxy");
 app.use(passport.initialize());
 app.use(express.json());
 app.use(express.static("public"));
