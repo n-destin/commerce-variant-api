@@ -88,6 +88,8 @@ export class OrderController extends Controller {
     )) as IProduct;
     if (!product) throw new CustomError("Product not found", 400);
     const isDonation = product?.purpose?.slug?.includes("DONAT");
+    const orderFound = await Order.find({orderer: user._id, product: product._id})
+    if(orderFound.length != 0){ return "found"}
     const isRent = product?.purpose?.slug?.includes("RENT");
     const quantity = isRent && order.days && order.days > 0 ? order.days : 1;
     const total = isDonation ? 0 : quantity * product.price!;
@@ -108,13 +110,15 @@ export class OrderController extends Controller {
       });
     }
     if (!isDonation) {
-      return await createCheckoutSession(
+      const session = await createCheckoutSession(
         product.name,
         total,
         user.email,
         orderRefId,
         product._id,
       );
+      console.log("creating checkout session", session);
+      return session
     } else {
       await Product.findByIdAndUpdate(product._id, { isAvailable: false });
       return "created";

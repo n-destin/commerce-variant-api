@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-
 // clientID: "",
 // clientSecret: "",
 export const appConfig = {
@@ -22,5 +21,6 @@ export const appConfig = {
   microsoftSecret: process.env.MICROSOFT_SECRET_KEY!,
   userVerifyLink: process.env.USER_VERIFY_LINK,
   secretKey: process.env.SECRETE_KEY,
-  resetPassword: process.env.USER_RESET_PASSWORD
+  resetPassword: process.env.USER_RESET_PASSWORD,
+  stripeKey : process.env.STRIPE_SECRET_KEY
 };

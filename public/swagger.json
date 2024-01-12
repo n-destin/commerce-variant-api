@@ -535,19 +535,13 @@
 				},
 				"required": [
 					"_id",
-<<<<<<< HEAD
+					"name",
+					"description",
 					"allowbargaining",
 					"brand",
 					"thumbnail",
 					"gallery",
-					"description",
 					"offersmade"
-=======
-					"name",
-					"description",
-					"thumbnail",
-					"gallery"
->>>>>>> b52efeff94103b314a228a24be05a82c551d3fa7
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -866,19 +860,13 @@
 				},
 				"required": [
 					"_id",
-<<<<<<< HEAD
+					"name",
+					"description",
 					"allowbargaining",
 					"brand",
 					"thumbnail",
 					"gallery",
-					"description",
 					"offersmade",
-=======
-					"name",
-					"description",
-					"thumbnail",
-					"gallery",
->>>>>>> b52efeff94103b314a228a24be05a82c551d3fa7
 					"similar"
 				],
 				"type": "object",
@@ -962,13 +950,8 @@
 					"allowbargaining",
 					"brand",
 					"thumbnail",
-<<<<<<< HEAD
 					"gallery",
-					"description",
 					"offersmade"
-=======
-					"gallery"
->>>>>>> b52efeff94103b314a228a24be05a82c551d3fa7
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
@@ -1418,6 +1401,9 @@
 																"password": {
 																	"type": "string"
 																},
+																"isAdmin": {
+																	"type": "boolean"
+																},
 																"name": {
 																	"properties": {
 																		"middleName": {
@@ -1432,8 +1418,8 @@
 																	},
 																	"type": "object"
 																},
-																"isAdmin": {
-																	"type": "boolean"
+																"type": {
+																	"type": "string"
 																},
 																"phoneNumber": {
 																	"type": "string"
@@ -3622,6 +3608,9 @@
 												"password": {
 													"type": "string"
 												},
+												"isAdmin": {
+													"type": "boolean"
+												},
 												"name": {
 													"properties": {
 														"middleName": {
@@ -3636,8 +3625,8 @@
 													},
 													"type": "object"
 												},
-												"isAdmin": {
-													"type": "boolean"
+												"type": {
+													"type": "string"
 												},
 												"phoneNumber": {
 													"type": "string"
@@ -3658,9 +3647,6 @@
 													"type": "string"
 												},
 												"provider": {
-													"type": "string"
-												},
-												"type": {
 													"type": "string"
 												},
 												"id": {

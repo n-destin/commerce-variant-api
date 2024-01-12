@@ -32,9 +32,8 @@ export class AuthController extends Controller {
     }
 
     const userInfo = await User.create(userProfile) as unknown as IUser
-
     const accessToken = generateAuthToken(userInfo._id)
-
+    
     const message = `You can easily verify your account by clicking on the following link: ${appConfig.userVerifyLink}?token=${accessToken}`
     if (userInfo) {
       sendEmail(userInfo.email,

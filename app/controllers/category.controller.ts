@@ -18,6 +18,7 @@ import {
 export class CategoryController extends Controller {
   @Get("/")
   public static async getAllCategories(): Promise<ICategory[]> {
+    const toReturn = await Category.find()
     return await Category.find();
   }
   @Security("jwtAuth")

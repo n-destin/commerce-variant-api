@@ -44,6 +44,7 @@ app.use(
     },
   }),
 );
+
 app.use("/api", apiRouter);
 initAuthStategies();
 passport.serializeUser((user, done) => {
@@ -65,7 +66,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-message", async ({ sender, ...data }, callback) => {
-    const message2 = { ...data, text: await removePersonalInformation(data.text) };
+    //const text = await removePersonalInformation(data.text)  // use this to remove personal information after getting the api
+    const message2 = { ...data, text: data.text};
     const message = await MessageController.createMessage(message2, sender);
     io.to(data.chat).emit("getMessage", message);
     console.log(data);

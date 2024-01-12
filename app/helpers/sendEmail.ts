@@ -7,6 +7,8 @@ export const sendEmail = async (
   subject: string,
 ) => {
 
+  console.log(appConfig.mailerUsernmae, appConfig.mailerPassword, appConfig.mailerService);
+
   const transporter = nodemailer.createTransport({
     service: appConfig.mailerService,
     auth: {
@@ -26,6 +28,8 @@ export const sendEmail = async (
     await transporter.sendMail(mailOptions);
     console.log(`Email reminder sent to ${emailTo} successfully`);
   } catch (error) {
+    console.log(transporter);
     console.error("Error sending email", error);
+    console.log(appConfig.mailerUsernmae)
   }
 };

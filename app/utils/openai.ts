@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: "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",
 });
 
 export const removePersonalInformation = async (
@@ -16,7 +16,7 @@ export const removePersonalInformation = async (
     const redactedMessage = response.choices[0].message.content;
     return redactedMessage as string;
   } catch (error) {
-    console.error("Error making API request:", error);
+    console.error("Error making APoI request:", error);
     throw error;
   }
 };
