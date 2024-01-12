@@ -48,7 +48,7 @@ authRouter.get(
   async (req, res, next) => {
     try {
       const user = req?.user as IUser;
-      if (!user.email.endsWith(".edu")) {
+      if (user.email.endsWith(".edu")) {
         // Remove ! for this to work
         const authState = await AuthController.socialLogin(req.user as IUser);
         const redirectUrl = `${appConfig.frontEndUrl}/auth/redirect?token=${authState.accessToken}`;
