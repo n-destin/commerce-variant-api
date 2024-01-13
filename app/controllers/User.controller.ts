@@ -19,6 +19,7 @@ export class UserController extends Controller {
   @Security("jwtAuth")
   @Get("/profile")
   public static async getMyProfile(@Inject() user: IUser): Promise<IUser> {
+    console.log(user);
     return user;
   }
 

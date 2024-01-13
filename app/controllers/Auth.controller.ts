@@ -17,6 +17,7 @@ export class AuthController extends Controller {
   }
   @Get("/google/redirect")
   public static async socialLogin(@Inject() user: IUser): Promise<ILoginResponse> {
+    console.log("I reachhhhhhhh");
     const accessToken = generateAuthToken(user._id);
     return {
       accessToken,
