@@ -31,7 +31,7 @@ authRouter.get(
       if (user.email.endsWith(".edu")) {
         // Remove ! for this to work
         const authState = await AuthController.socialLogin(req.user as IUser);
-        const redirectUrl = `${appConfig.frontEndUrl}/auth/redirect?token=${authState.accessToken}`;
+        const redirectUrl = `${appConfig.frontEndUrl}`;
         return res.redirect(redirectUrl);
       } else {
         return res.redirect(`${appConfig.frontEndUrl}/login?error=invalid-email`);
