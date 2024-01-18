@@ -13,15 +13,26 @@ import { createServer } from "http"; // Use 'http' instead of 'node:http'
 import { ChatController } from "./controllers/chat.controller";
 import { MessageController } from "./controllers/message.controller";
 import { removePersonalInformation } from "./utils/openai";
+import MongoStore from 'connect-mongo'
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://collegemarketapi.onrender.com", // Specify the origin for CORS
+    origin: "http://localhost:5173", // Specify the origin for CORS
     methods: ["GET", "POST"],
   },
 });
+
+app.use(session({
+  store: MongoStore.create({collectionName: 'sessions', mongoUrl: appConfig.databaseUrl}),
+  secret: '_',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000 
+  }
+}));
 
 app.use(cors());
 app.use(
