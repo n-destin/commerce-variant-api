@@ -27,11 +27,6 @@ const io = new Server(server, {
 app.use(session({
   store: MongoStore.create({collectionName: 'sessions', mongoUrl: appConfig.databaseUrl}),
   secret: '_',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000 
-  }
 }));
 
 app.use(cors());
