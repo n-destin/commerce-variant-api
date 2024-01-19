@@ -14,26 +14,23 @@ import { ChatController } from "./controllers/chat.controller";
 import { MessageController } from "./controllers/message.controller";
 import { removePersonalInformation } from "./utils/openai";
 import MongoStore from 'connect-mongo'
+import { MemoryStore } from "express-session";
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://collegemarket.onrender.com", // Specify the origin for CORS
+    origin: "http://localhost:5173", // Specify the origin for CORS
     methods: ["GET", "POST"],
   },
 });
-
-app.use(session({
-  store: MongoStore.create({collectionName: 'sessions', mongoUrl: appConfig.databaseUrl}),
-  secret: '_',
-}));
 
 app.use(cors());
 app.use(
   session({
     secret: "_",
     resave: false,
+    store : MongoStore.create({mongoUrl: appConfig.databaseUrl}),
     saveUninitialized: false,
   }),
 );
