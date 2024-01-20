@@ -95,6 +95,9 @@ dependencies:
   passport-microsoft:
     specifier: ^1.0.0
     version: 1.0.0
+  punycode:
+    specifier: ^2.3.1
+    version: 2.3.1
   redis:
     specifier: ^4.6.12
     version: 4.6.12
